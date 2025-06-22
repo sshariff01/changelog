@@ -35,7 +35,7 @@ export function Toast({ message, type, isVisible, onClose }: ToastProps) {
         <span className="text-sm font-medium">{message}</span>
         <button
           onClick={onClose}
-          className="ml-2 text-current hover:opacity-70"
+          className="ml-2 text-current hover:opacity-70 cursor-pointer"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <line x1="18" y1="6" x2="6" y2="18"></line>

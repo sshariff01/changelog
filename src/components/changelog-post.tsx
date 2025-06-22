@@ -482,14 +482,14 @@ export function ChangelogPost({
           <div className="flex justify-end gap-2">
             <button
               onClick={handleCancel}
-              className="edit-button-cancel px-4 py-2 text-sm font-medium rounded-md"
+              className="edit-button-cancel px-4 py-2 text-sm font-medium rounded-md cursor-pointer"
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="edit-button-save px-4 py-2 text-sm font-medium rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+              className="edit-button-save px-4 py-2 text-sm font-medium rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSaving ? "Saving..." : "Save"}
             </button>
@@ -523,7 +523,7 @@ export function ChangelogPost({
           <button
             onClick={onEdit}
             title="Edit post"
-            className="absolute top-4 right-4 p-2 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200 rounded-md"
+            className="absolute top-4 right-4 p-2 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200 rounded-md cursor-pointer"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

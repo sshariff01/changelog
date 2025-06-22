@@ -12,7 +12,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      className={`relative w-18 h-9 rounded-full
+      className={`relative w-18 h-9 rounded-full cursor-pointer
   border transition-all duration-300 ease-in-out shadow-inner
   focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2
   ${
