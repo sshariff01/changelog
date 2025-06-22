@@ -552,7 +552,7 @@ export function ChangelogPost({
             </ReactMarkdown>
           </div>
           {isAdmin && (
-            <div className="absolute top-4 right-6 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="absolute top-4 right-6 flex items-center gap-2 transition-opacity">
               <button
                 onClick={onEdit}
                 title="Edit post"
