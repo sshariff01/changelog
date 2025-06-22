@@ -29,6 +29,7 @@ export function ChangelogList({ posts: initialPosts }: Props) {
     title: string;
     content: string;
   } | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<string | null>(null);
   const { toast, showToast, hideToast } = useToast();
   const { isAdmin } = useAdmin();
 
@@ -43,6 +44,11 @@ export function ChangelogList({ posts: initialPosts }: Props) {
   const handleSave = async (id: string, newTitle: string, newContent: string) => {
     // Show confirmation dialog first
     setPendingSave({ id, title: newTitle, content: newContent });
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteClick = (postId: string) => {
+    setPendingDelete(postId);
     setIsModalOpen(true);
   };
 
@@ -88,9 +94,45 @@ export function ChangelogList({ posts: initialPosts }: Props) {
     }
   };
 
+  const confirmDelete = async () => {
+    if (!pendingDelete) return;
+
+    // To provide instant feedback, we can optimistically remove the post from the UI.
+    const originalPosts = [...posts];
+    setPosts(prevPosts => prevPosts.filter(post => post.id !== pendingDelete));
+
+    try {
+      const { error } = await supabase
+        .from("posts")
+        .delete()
+        .eq("id", pendingDelete);
+
+      if (error) {
+        // If the delete fails, revert the UI change and show an error.
+        setPosts(originalPosts);
+        console.error("Failed to delete post:", error.message);
+        showToast("Failed to delete post. Please try again.", "error");
+      } else {
+        showToast("Post deleted successfully!", "success");
+      }
+    } catch (error) {
+      setPosts(originalPosts);
+      console.error("Error deleting post:", error);
+      showToast("An unexpected error occurred. Please try again.", "error");
+    } finally {
+      setIsModalOpen(false);
+      setPendingDelete(null);
+    }
+  };
+
   const cancelSave = () => {
     setIsModalOpen(false);
     setPendingSave(null);
+  };
+
+  const cancelDelete = () => {
+    setIsModalOpen(false);
+    setPendingDelete(null);
   };
 
   const handleCancel = () => {
@@ -156,11 +198,12 @@ export function ChangelogList({ posts: initialPosts }: Props) {
             onEdit={() => handleEditClick(post.id)}
             onSave={handleSave}
             onCancel={handleCancel}
+            onDelete={() => handleDeleteClick(post.id)}
           />
         ))}
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={pendingSave ? cancelSave : handleEditConflict}>
+      <Modal isOpen={isModalOpen} onClose={pendingSave ? cancelSave : pendingDelete ? cancelDelete : handleEditConflict}>
         {pendingSave ? (
           <>
             <h3 className="modal-title text-lg font-medium">Confirm Save</h3>
@@ -179,6 +222,27 @@ export function ChangelogList({ posts: initialPosts }: Props) {
                 className="px-4 h-8 text-xs font-medium rounded-full bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
               >
                 Save Changes
+              </button>
+            </div>
+          </>
+        ) : pendingDelete ? (
+          <>
+            <h3 className="modal-title text-lg font-medium">Confirm Deletion</h3>
+            <p className="modal-text text-sm mt-2">
+              Are you sure you want to delete this post? This action cannot be undone.
+            </p>
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                onClick={cancelDelete}
+                className="px-4 h-8 text-xs font-medium rounded-full bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-zinc-700 dark:text-gray-200 dark:hover:bg-zinc-600 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 h-8 text-xs font-medium rounded-full bg-red-600 text-white hover:bg-red-700 cursor-pointer"
+              >
+                Delete
               </button>
             </div>
           </>
