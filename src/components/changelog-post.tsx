@@ -554,12 +554,12 @@ export function ChangelogPost({
               <button
                 onClick={onDelete}
                 title="Delete post"
-                className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer bg-transparent text-red-500 hover:bg-red-50 dark:hover:bg-red-900/50 border border-red-500"
+                className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer bg-transparent text-red-600/80 border border-red-600/80 transition-colors hover:bg-red-600 hover:text-white"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
+                  width="15"
+                  height="15"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
