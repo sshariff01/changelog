@@ -1,15 +1,20 @@
 "use client";
 
 import { useAdmin } from "@/lib/admin-context";
+import { useTheme } from "@/lib/theme-context";
 
 export function AdminToggle() {
   const { isAdmin, toggleAdmin } = useAdmin();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
     <button
       onClick={toggleAdmin}
       className={`relative flex items-center h-8 w-20 rounded-full cursor-pointer transition-colors duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-purple-500 ${
-        isAdmin ? "bg-purple-600/95" : "bg-gray-200/95 dark:bg-zinc-700/95"
+        isAdmin
+          ? isDark ? "bg-purple-600/95" : "bg-purple-300/95"
+          : isDark ? "bg-zinc-700/95" : "bg-gray-300/95"
       }`}
       title={isAdmin ? "Switch to Viewer View" : "Switch to Admin View"}
       aria-label={isAdmin ? "Disable Admin Mode" : "Enable Admin Mode"}
@@ -18,8 +23,8 @@ export function AdminToggle() {
       <div
         className={`absolute top-1 left-1 w-6 h-6 rounded-full flex items-center justify-center shadow-md transform transition-transform duration-300 ease-in-out ${
           isAdmin
-            ? "translate-x-0 bg-white text-purple-600"
-            : "translate-x-[48px] bg-white text-gray-500"
+            ? `translate-x-0 bg-white ${isDark ? "text-purple-600" : "text-purple-600"}`
+            : `translate-x-[48px] bg-white ${isDark ? "text-gray-500" : "text-gray-600"}`
         }`}
       >
         {isAdmin ? (
@@ -54,16 +59,16 @@ export function AdminToggle() {
 
       {/* Text Labels */}
       <span
-        className={`absolute right-2.5 text-[10px] font-bold text-white transition-opacity duration-300 ${
+        className={`absolute right-2.5 text-[10px] font-bold transition-opacity duration-300 ${
           isAdmin ? "opacity-100" : "opacity-0"
-        }`}
+        } ${isDark ? "text-white" : "text-purple-700"}`}
       >
         Admin
       </span>
       <span
-        className={`absolute left-2.5 text-[10px] font-bold text-white transition-opacity duration-300 ${
+        className={`absolute left-2.5 text-[10px] font-bold transition-opacity duration-300 ${
           !isAdmin ? "opacity-100" : "opacity-0"
-        }`}
+        } ${isDark ? "text-white" : "text-gray-700"}`}
       >
         Viewer
       </span>
