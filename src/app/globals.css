@@ -17,7 +17,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #121212;
     --foreground: #ededed;
   }
 }
@@ -28,5 +28,5 @@ body {
 }
 
 .dark body {
-  @apply bg-black text-white;
+  @apply bg-[#121212] text-white;
 }
