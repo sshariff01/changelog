@@ -20,7 +20,7 @@ export default async function ChangelogPage() {
   const posts = await getPosts();
 
   return (
-    <main className="max-w-3xl mx-auto px-4 py-12">
+    <main className="max-w-2xl mx-auto px-4 py-12">
       <ChangelogHeader />
       <ChangelogList posts={posts} />
     </main>

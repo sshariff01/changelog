@@ -473,7 +473,7 @@ export function ChangelogPost({
             type="text"
             value={editableTitle}
             onChange={(e) => setEditableTitle(e.target.value)}
-            className="text-xl font-semibold w-full border-b-2 border-gray-300 focus:border-blue-500 outline-none bg-transparent"
+            className="text-2xl font-semibold w-full border-b-2 border-gray-300 focus:border-blue-500 outline-none bg-transparent"
           />
           <textarea
             value={editableContent}
@@ -501,7 +501,7 @@ export function ChangelogPost({
         <>
           <div className="mb-2">
             <div className="date-badge text-xs font-semibold px-2.5 py-1 rounded-full inline-block mb-2">{formattedDate}</div>
-            <h2 className="text-3xl font-semibold pt-2">{title}</h2>
+            <h2 className="text-2xl font-semibold pt-2">{title}</h2>
           </div>
           <div className="mt-2 flex flex-wrap gap-2">
             {tags.map((tag) => (
