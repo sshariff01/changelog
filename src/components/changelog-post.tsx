@@ -197,6 +197,14 @@ function useSyntaxHighlighting() {
         .dark .edit-button-cancel:hover {
           background-color: #52525b; /* zinc-600 */
         }
+        .date-badge {
+          background-color: #374151;
+          color: white;
+        }
+        .dark .date-badge {
+          background-color: #1e3a8a;
+          color: #93c5fd;
+        }
       `;
     } else {
       // Monokai theme (light) - vibrant colors on light background
@@ -362,6 +370,14 @@ function useSyntaxHighlighting() {
         .dark .edit-button-cancel:hover {
           background-color: #52525b; /* zinc-600 */
         }
+        .date-badge {
+          background-color: #dbeafe;
+          color: #1e40af;
+        }
+        .dark .date-badge {
+          background-color: #1e3a8a;
+          color: #93c5fd;
+        }
       `;
     }
 
@@ -435,11 +451,20 @@ export function ChangelogPost({
         .dark .edit-button-cancel:hover {
           background-color: #52525b; /* zinc-600 */
         }
+        .date-badge {
+          background-color: #dbeafe;
+          color: #1e40af;
+        }
+        .dark .date-badge {
+          background-color: #1e3a8a;
+          color: #93c5fd;
+        }
       `}
     </style>
     <article className="border rounded-xl p-6 relative group">
       {isEditing ? (
         <div className="space-y-4">
+          <div className="date-badge text-xs font-semibold px-2.5 py-1 rounded-full inline-block mb-2">{formattedDate}</div>
           <input
             type="text"
             value={editableTitle}
@@ -469,8 +494,10 @@ export function ChangelogPost({
         </div>
       ) : (
         <>
-          <h2 className="text-xl font-semibold">{title}</h2>
-          <div className="text-sm text-gray-500">{formattedDate}</div>
+          <div className="mb-2">
+            <div className="date-badge text-xs font-semibold px-2.5 py-1 rounded-full inline-block mb-2">{formattedDate}</div>
+            <h2 className="text-3xl font-semibold pt-2">{title}</h2>
+          </div>
           <div className="mt-2 flex flex-wrap gap-2">
             {tags.map((tag) => (
               <span
@@ -490,11 +517,10 @@ export function ChangelogPost({
               {content}
             </ReactMarkdown>
           </div>
-
           <button
             onClick={onEdit}
             title="Edit post"
-            className="absolute top-4 right-4 rounded-md p-2 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
+            className="absolute top-4 right-4 p-2 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200 rounded-md"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
