@@ -12,7 +12,7 @@ export function ChangelogHeader() {
   const { isAdmin } = useAdmin();
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const { editingPostId, setConflictModalOpen } = useEditing();
+  const { editingPostId } = useEditing();
   const router = useRouter();
 
   const handleNewPostClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -31,10 +31,9 @@ export function ChangelogHeader() {
         <AdminToggle />
       </div>
       <div className="flex items-center gap-4">
-        {isAdmin && (
+        {isAdmin && !editingPostId && (
           <Link
             href="/create-post"
-            onClick={handleNewPostClick}
             className={`group inline-flex items-center justify-center h-8 w-8 rounded-full overflow-hidden transition-all duration-300 ease-in-out border-2 hover:w-28 ${
               isDark
                 ? "border-blue-500 text-blue-300 hover:bg-blue-500/20"

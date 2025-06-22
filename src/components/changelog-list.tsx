@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { ChangelogPost } from "./changelog-post";
 import { Modal } from "./modal";
 import { Toast, useToast } from "./toast";
@@ -33,6 +34,40 @@ export function ChangelogList({ posts: initialPosts }: Props) {
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
   const { toast, showToast, hideToast } = useToast();
   const { isAdmin } = useAdmin();
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (editingPostId) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [editingPostId]);
+
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      if (editingPostId) {
+        setConflictModalOpen(true);
+        history.pushState(null, "", window.location.href);
+      }
+    };
+
+    if (editingPostId) {
+      history.pushState(null, "", window.location.href);
+      window.addEventListener("popstate", handlePopState);
+    }
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [editingPostId, setConflictModalOpen]);
 
   const handleEditClick = (postId: string) => {
     if (editingPostId && editingPostId !== postId) {
@@ -191,7 +226,7 @@ export function ChangelogList({ posts: initialPosts }: Props) {
             {...post}
             isEditing={editingPostId === post.id}
             isSaving={isSaving && editingPostId === post.id}
-            isAdmin={isAdmin}
+            isAdmin={isAdmin && !editingPostId}
             onEdit={() => handleEditClick(post.id)}
             onSave={handleSave}
             onCancel={handleCancel}

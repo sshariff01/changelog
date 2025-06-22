@@ -413,6 +413,7 @@ export function ChangelogPost({
 
   const [editableTitle, setEditableTitle] = useState(title);
   const [editableContent, setEditableContent] = useState(content);
+  const [isPreviewing, setIsPreviewing] = useState(false);
 
   const date = new Date(published_at);
   const formattedDate = date.toLocaleDateString("en-US", {
@@ -457,20 +458,8 @@ export function ChangelogPost({
     >
       {isEditing ? (
         <div className="space-y-4">
-          <div className="date-badge text-xs font-semibold px-2.5 py-1 rounded-full inline-block mb-2">{formattedDate}</div>
-          <input
-            type="text"
-            value={editableTitle}
-            onChange={(e) => setEditableTitle(e.target.value)}
-            className="text-2xl font-semibold w-full border-b-2 border-gray-300 focus:border-blue-500 outline-none bg-transparent"
-          />
-          <textarea
-            value={editableContent}
-            onChange={(e) => setEditableContent(e.target.value)}
-            rows={10}
-            className="w-full border rounded-md p-2 bg-transparent"
-          />
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-between items-center mb-2">
+            <div className="date-badge text-xs font-semibold px-2.5 py-1 rounded-full inline-block">{formattedDate}</div>
             <button
               onClick={handleCancel}
               className={`px-4 h-8 text-xs font-semibold rounded-full cursor-pointer border-[1.5px] transition-colors ${
@@ -480,6 +469,49 @@ export function ChangelogPost({
               }`}
             >
               Cancel
+            </button>
+          </div>
+          {isPreviewing ? (
+            <h2 className="text-2xl font-semibold w-full border-b-2 border-gray-300 focus:border-blue-500 outline-none bg-transparent py-1">
+              {editableTitle}
+            </h2>
+          ) : (
+            <input
+              type="text"
+              value={editableTitle}
+              onChange={(e) => setEditableTitle(e.target.value)}
+              className="text-2xl font-semibold w-full border-b-2 border-gray-300 focus:border-blue-500 outline-none bg-transparent"
+            />
+          )}
+
+          {isPreviewing ? (
+            <div className="markdown-content mt-4">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw, rehypeHighlight]}
+              >
+                {editableContent}
+              </ReactMarkdown>
+            </div>
+          ) : (
+            <textarea
+              value={editableContent}
+              onChange={(e) => setEditableContent(e.target.value)}
+              rows={10}
+              className="w-full border rounded-md p-2 bg-transparent"
+            />
+          )}
+
+          <div className="flex justify-end gap-2">
+            <button
+              onClick={() => setIsPreviewing(!isPreviewing)}
+              className={`px-4 h-8 text-xs font-semibold rounded-full cursor-pointer border-[1.5px] transition-colors ${
+                isDark
+                  ? "border-gray-600 bg-gray-800 text-gray-300 hover:bg-gray-700 hover:border-gray-500"
+                  : "border-gray-200 bg-white text-gray-500 hover:bg-gray-50 hover:border-gray-300"
+              }`}
+            >
+              {isPreviewing ? "Edit" : "Preview"}
             </button>
             <button
               onClick={handleSave}
