@@ -1,58 +1,72 @@
 "use client";
 
 import { useAdmin } from "@/lib/admin-context";
-import { useState } from "react";
 
 export function AdminToggle() {
   const { isAdmin, toggleAdmin } = useAdmin();
-  const [isHovered, setIsHovered] = useState(false);
-
-  // Show shield if:
-  // 1. We ARE in admin mode AND we are NOT hovering.
-  // 2. We are NOT in admin mode AND we ARE hovering.
-  const showShield = (isAdmin && !isHovered) || (!isAdmin && isHovered);
 
   return (
     <button
       onClick={toggleAdmin}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className={`p-1.5 rounded-full transition-colors duration-300 ease-in-out border cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-purple-500 ${
-        isAdmin
-          ? "bg-purple-200 text-white border-purple-400 dark:bg-purple-700 dark:border-transparent"
-          : "bg-transparent text-gray-500 border-gray-300 dark:text-gray-400 dark:border-zinc-700"
+      className={`relative flex items-center h-9 w-22 rounded-full cursor-pointer transition-colors duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-purple-500 ${
+        isAdmin ? "bg-purple-600" : "bg-gray-200 dark:bg-zinc-700"
       }`}
       title={isAdmin ? "Switch to Viewer View" : "Switch to Admin View"}
       aria-label={isAdmin ? "Disable Admin Mode" : "Enable Admin Mode"}
     >
-      {showShield ? (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="w-4 h-4"
-        >
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-        </svg>
-      ) : (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="w-4 h-4"
-        >
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-          <circle cx="12" cy="12" r="3" />
-        </svg>
-      )}
+      {/* Sliding indicator with icon */}
+      <div
+        className={`absolute top-1 left-1 w-7 h-7 rounded-full flex items-center justify-center shadow-md transform transition-transform duration-300 ease-in-out ${
+          isAdmin
+            ? "translate-x-[52px] bg-white text-purple-600"
+            : "translate-x-0 bg-white text-gray-500"
+        }`}
+      >
+        {isAdmin ? (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="w-4 h-4"
+          >
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="w-4 h-4"
+          >
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+        )}
+      </div>
+
+      {/* Text Labels */}
+      <span
+        className={`absolute left-3 text-xs font-bold text-white transition-opacity duration-300 ${
+          isAdmin ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        Admin
+      </span>
+      <span
+        className={`absolute right-3 text-xs font-bold text-white transition-opacity duration-300 ${
+          !isAdmin ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        Viewer
+      </span>
     </button>
   );
 }
