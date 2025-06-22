@@ -18,16 +18,16 @@ export function ChangelogHeader() {
         {isAdmin && (
           <Link
             href="/create-post"
-            className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md transition-colors border bg-blue-600 text-white hover:bg-blue-700 border-transparent dark:border-blue-400 dark:bg-transparent dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-white"
+            className="flex items-center gap-1.5 px-3 h-8 text-[10px] font-medium rounded-full transition-colors border bg-blue-600 text-white hover:bg-blue-700 border-transparent dark:border-blue-400 dark:bg-transparent dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-white"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
+              width="14"
+              height="14"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
