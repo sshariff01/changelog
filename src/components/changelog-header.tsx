@@ -18,7 +18,7 @@ export function ChangelogHeader() {
         {isAdmin && (
           <Link
             href="/create-post"
-            className="flex items-center gap-1.5 px-3 h-8 text-[10px] font-medium rounded-full transition-colors border bg-blue-600 text-white hover:bg-blue-700 border-transparent dark:border-blue-400 dark:bg-transparent dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-white"
+            className="flex items-center gap-1.5 px-3.5 h-8 text-xs font-semibold rounded-full transition-all border border-blue-500/50 bg-blue-100 text-blue-600 hover:bg-blue-200 dark:border-blue-400 dark:bg-transparent dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-white"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
