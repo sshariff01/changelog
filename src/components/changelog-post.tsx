@@ -408,6 +408,8 @@ export function ChangelogPost({
   onDelete,
 }: Props) {
   useSyntaxHighlighting();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   const [editableTitle, setEditableTitle] = useState(title);
   const [editableContent, setEditableContent] = useState(content);
@@ -436,27 +438,6 @@ export function ChangelogPost({
     <>
     <style>
       {`
-        .edit-button-save {
-          background-color: #2563eb; /* blue-600 */
-          color: white;
-        }
-        .edit-button-save:hover {
-          background-color: #1d4ed8; /* blue-700 */
-        }
-        .edit-button-cancel {
-          background-color: #e5e7eb; /* gray-200 */
-          color: #1f2937; /* gray-800 */
-        }
-        .edit-button-cancel:hover {
-           background-color: #d1d5db; /* gray-300 */
-        }
-        .dark .edit-button-cancel {
-          background-color: #3f3f46; /* zinc-700 */
-          color: #e5e7eb; /* gray-200 */
-        }
-        .dark .edit-button-cancel:hover {
-          background-color: #52525b; /* zinc-600 */
-        }
         .date-badge {
           background-color: #dbeafe;
           color: #1e40af;
@@ -492,14 +473,22 @@ export function ChangelogPost({
           <div className="flex justify-end gap-2">
             <button
               onClick={handleCancel}
-              className="edit-button-cancel px-4 h-8 text-xs font-medium rounded-full cursor-pointer"
+              className={`px-4 h-8 text-xs font-semibold rounded-full cursor-pointer border-[1.5px] transition-colors ${
+                isDark
+                  ? "border-gray-600 bg-gray-800 text-gray-300 hover:bg-gray-700 hover:border-gray-500"
+                  : "border-gray-200 bg-white text-gray-500 hover:bg-gray-50 hover:border-gray-300"
+              }`}
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="edit-button-save px-4 h-8 text-xs font-medium rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className={`px-4 h-8 text-xs font-semibold rounded-full cursor-pointer border-[1.5px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                isDark
+                  ? "border-blue-400 bg-blue-900/20 text-blue-400 hover:bg-blue-500 hover:text-white hover:border-blue-400"
+                  : "border-blue-300 bg-blue-100 text-blue-600 hover:bg-blue-500 hover:text-white hover:border-blue-500"
+              }`}
             >
               {isSaving ? "Saving..." : "Save"}
             </button>
@@ -535,7 +524,11 @@ export function ChangelogPost({
               <button
                 onClick={onEdit}
                 title="Edit post"
-                className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer bg-transparent text-gray-500/80 border-[1.5px] border-gray-500/80 transition-colors hover:bg-gray-500 hover:text-white dark:text-gray-400/80 dark:border-gray-400/80 dark:hover:bg-gray-400 dark:hover:text-white dark:hover:border-gray-400"
+                className={`w-8 h-8 flex items-center justify-center rounded-full cursor-pointer bg-transparent border-[1.5px] transition-colors ${
+                  isDark
+                    ? "text-gray-400/80 border-gray-400/80 hover:bg-gray-400 hover:text-white hover:border-gray-400"
+                    : "text-gray-500/80 border-gray-500/80 hover:bg-gray-500 hover:text-white"
+                }`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -554,7 +547,11 @@ export function ChangelogPost({
               <button
                 onClick={onDelete}
                 title="Delete post"
-                className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer bg-transparent text-red-600/80 border-[1.5px] border-red-600/80 transition-colors hover:bg-red-600 hover:text-white"
+                className={`w-8 h-8 flex items-center justify-center rounded-full cursor-pointer bg-transparent border-[1.5px] transition-colors ${
+                  isDark
+                    ? "text-red-600/80 border-red-600/80 hover:bg-red-600 hover:text-white"
+                    : "text-red-500/80 border-red-500/80 hover:bg-red-500 hover:text-white"
+                }`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
