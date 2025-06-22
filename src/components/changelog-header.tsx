@@ -4,9 +4,12 @@ import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AdminToggle } from "@/components/admin-toggle";
 import { useAdmin } from "@/lib/admin-context";
+import { useTheme } from "@/lib/theme-context";
 
 export function ChangelogHeader() {
   const { isAdmin } = useAdmin();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
     <div className="flex items-center justify-between mb-8">
@@ -18,9 +21,14 @@ export function ChangelogHeader() {
         {isAdmin && (
           <Link
             href="/create-post"
-            className="flex items-center gap-1.5 px-3.5 h-8 text-xs font-semibold rounded-full transition-all border border-blue-500/50 bg-blue-100 text-blue-600 hover:bg-blue-200 dark:border-blue-400 dark:bg-transparent dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-white"
+            className={`group inline-flex items-center justify-center h-8 w-8 rounded-full overflow-hidden transition-all duration-300 ease-in-out border-2 hover:w-28 ${
+              isDark
+                ? "border-blue-500 text-blue-300 hover:bg-blue-500/20"
+                : "border-blue-200 text-blue-600 hover:bg-blue-50"
+            }`}
           >
             <svg
+              className="transition-transform duration-300 ease-in-out"
               xmlns="http://www.w3.org/2000/svg"
               width="14"
               height="14"
@@ -34,7 +42,9 @@ export function ChangelogHeader() {
               <line x1="12" y1="5" x2="12" y2="19"></line>
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
-            New Post
+            <span className="opacity-0 w-0 whitespace-nowrap transition-opacity duration-100 ease-in-out group-hover:opacity-100 group-hover:w-auto group-hover:ml-1.5 text-xs font-semibold">
+              New Post
+            </span>
           </Link>
         )}
         <ThemeToggle />
