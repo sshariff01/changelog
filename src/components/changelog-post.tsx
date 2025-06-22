@@ -2,6 +2,7 @@
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 import rehypeHighlight from "rehype-highlight";
 import { useEffect } from "react";
 import { useTheme } from "@/lib/theme-context";
@@ -30,6 +31,22 @@ function useSyntaxHighlighting() {
     if (theme === 'dark') {
       // Dracula theme (dark) - vibrant colors on dark background
       style.textContent = `
+        /* General markdown styles */
+        .markdown-content h2 {
+          font-size: 1.5rem;
+          font-weight: 600;
+          margin-top: 1.5rem;
+          margin-bottom: 1rem;
+        }
+        .markdown-content ul {
+          list-style-type: disc;
+          padding-left: 1.5rem;
+          margin-bottom: 1rem;
+        }
+        .markdown-content li {
+          margin-bottom: 0.25rem;
+        }
+
         /* Code block container */
         pre {
           background: #282a36 !important;
@@ -148,6 +165,22 @@ function useSyntaxHighlighting() {
     } else {
       // Monokai theme (light) - vibrant colors on light background
       style.textContent = `
+        /* General markdown styles */
+        .markdown-content h2 {
+          font-size: 1.5rem;
+          font-weight: 600;
+          margin-top: 1.5rem;
+          margin-bottom: 1rem;
+        }
+        .markdown-content ul {
+          list-style-type: disc;
+          padding-left: 1.5rem;
+          margin-bottom: 1rem;
+        }
+        .markdown-content li {
+          margin-bottom: 0.25rem;
+        }
+
         /* Code block container */
         pre {
           background: #fafafa !important;
@@ -299,10 +332,11 @@ export function ChangelogPost({ title, content, tags, published_at }: Props) {
           </span>
         ))}
       </div>
-      <div className="prose prose-sm dark:prose-invert mt-4">
+
+      <div className="markdown-content mt-4">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeHighlight]}
+          rehypePlugins={[rehypeRaw, rehypeHighlight]}
         >
           {content}
         </ReactMarkdown>
