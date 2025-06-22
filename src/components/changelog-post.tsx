@@ -8,10 +8,15 @@ import { useEffect, useState } from "react";
 import { useTheme } from "@/lib/theme-context";
 
 type Props = {
+  id: string;
   title: string;
   content: string;
   tags: string[];
   published_at: string;
+  isEditing: boolean;
+  onEdit: () => void;
+  onSave: (id: string, newTitle: string, newContent: string) => void;
+  onCancel: () => void;
 };
 
 // Custom hook for dynamic syntax highlighting themes
@@ -369,10 +374,19 @@ function useSyntaxHighlighting() {
   }, [theme]);
 }
 
-export function ChangelogPost({ title, content, tags, published_at }: Props) {
+export function ChangelogPost({
+  id,
+  title,
+  content,
+  tags,
+  published_at,
+  isEditing,
+  onEdit,
+  onSave,
+  onCancel,
+}: Props) {
   useSyntaxHighlighting();
 
-  const [isEditing, setIsEditing] = useState(false);
   const [editableTitle, setEditableTitle] = useState(title);
   const [editableContent, setEditableContent] = useState(content);
 
@@ -386,14 +400,14 @@ export function ChangelogPost({ title, content, tags, published_at }: Props) {
 
   const handleSave = () => {
     // TODO: Implement actual save logic to the database
-    console.log("Saving:", { title: editableTitle, content: editableContent });
-    setIsEditing(false);
+    console.log("Saving:", { id, title: editableTitle, content: editableContent });
+    onSave(id, editableTitle, editableContent);
   };
 
   const handleCancel = () => {
     setEditableTitle(title);
     setEditableContent(content);
-    setIsEditing(false);
+    onCancel();
   };
 
   return (
@@ -478,7 +492,7 @@ export function ChangelogPost({ title, content, tags, published_at }: Props) {
           </div>
 
           <button
-            onClick={() => setIsEditing(true)}
+            onClick={onEdit}
             title="Edit post"
             className="absolute top-4 right-4 rounded-md p-2 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
           >
