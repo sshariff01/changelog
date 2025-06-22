@@ -25,7 +25,24 @@ export default async function ChangelogPage() {
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-4xl font-bold">Changelog</h1>
         <div className="flex items-center gap-4">
-          <Link href="/create-post" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:underline">
+          <Link
+            href="/create-post"
+            className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md transition-colors border bg-blue-600 text-white hover:bg-blue-700 border-transparent dark:border-blue-400 dark:bg-transparent dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-white"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
             New Post
           </Link>
           <ThemeToggle />
