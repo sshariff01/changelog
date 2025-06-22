@@ -32,19 +32,29 @@ function useSyntaxHighlighting() {
       // Dracula theme (dark) - vibrant colors on dark background
       style.textContent = `
         /* General markdown styles */
-        .markdown-content h2 {
-          font-size: 1.5rem;
+        .markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6 {
           font-weight: 600;
           margin-top: 1.5rem;
           margin-bottom: 1rem;
         }
-        .markdown-content ul {
-          list-style-type: disc;
+        .markdown-content h1 { font-size: 2rem; }
+        .markdown-content h2 { font-size: 1.5rem; }
+        .markdown-content h3 { font-size: 1.25rem; }
+        .markdown-content p { margin-bottom: 1rem; }
+        .markdown-content ul, .markdown-content ol {
           padding-left: 1.5rem;
           margin-bottom: 1rem;
         }
-        .markdown-content li {
-          margin-bottom: 0.25rem;
+        .markdown-content ul { list-style-type: disc; }
+        .markdown-content ol { list-style-type: decimal; }
+        .markdown-content li { margin-bottom: 0.25rem; }
+        .markdown-content a { color: #60a5fa; text-decoration: underline; }
+        .markdown-content blockquote {
+          border-left: 4px solid #44475a;
+          padding-left: 1rem;
+          margin-left: 0;
+          font-style: italic;
+          color: #a9a9a9;
         }
 
         /* Code block container */
@@ -166,19 +176,29 @@ function useSyntaxHighlighting() {
       // Monokai theme (light) - vibrant colors on light background
       style.textContent = `
         /* General markdown styles */
-        .markdown-content h2 {
-          font-size: 1.5rem;
+        .markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6 {
           font-weight: 600;
           margin-top: 1.5rem;
           margin-bottom: 1rem;
         }
-        .markdown-content ul {
-          list-style-type: disc;
+        .markdown-content h1 { font-size: 2rem; }
+        .markdown-content h2 { font-size: 1.5rem; }
+        .markdown-content h3 { font-size: 1.25rem; }
+        .markdown-content p { margin-bottom: 1rem; }
+        .markdown-content ul, .markdown-content ol {
           padding-left: 1.5rem;
           margin-bottom: 1rem;
         }
-        .markdown-content li {
-          margin-bottom: 0.25rem;
+        .markdown-content ul { list-style-type: disc; }
+        .markdown-content ol { list-style-type: decimal; }
+        .markdown-content li { margin-bottom: 0.25rem; }
+        .markdown-content a { color: #3b82f6; text-decoration: underline; }
+        .markdown-content blockquote {
+          border-left: 4px solid #e5e7eb;
+          padding-left: 1rem;
+          margin-left: 0;
+          font-style: italic;
+          color: #6b7280;
         }
 
         /* Code block container */
