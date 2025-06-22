@@ -14,6 +14,7 @@ type Props = {
   tags: string[];
   published_at: string;
   isEditing: boolean;
+  isSaving?: boolean;
   onEdit: () => void;
   onSave: (id: string, newTitle: string, newContent: string) => void;
   onCancel: () => void;
@@ -397,6 +398,7 @@ export function ChangelogPost({
   tags,
   published_at,
   isEditing,
+  isSaving,
   onEdit,
   onSave,
   onCancel,
@@ -486,9 +488,10 @@ export function ChangelogPost({
             </button>
             <button
               onClick={handleSave}
-              className="edit-button-save px-4 py-2 text-sm font-medium rounded-md"
+              disabled={isSaving}
+              className="edit-button-save px-4 py-2 text-sm font-medium rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Save
+              {isSaving ? "Saving..." : "Save"}
             </button>
           </div>
         </div>

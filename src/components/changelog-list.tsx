@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChangelogPost } from "./changelog-post";
 import { Modal } from "./modal";
+import { supabase } from "@/lib/supabase";
 
 type Post = {
   id: string;
@@ -16,9 +17,11 @@ type Props = {
   posts: Post[];
 };
 
-export function ChangelogList({ posts }: Props) {
+export function ChangelogList({ posts: initialPosts }: Props) {
+  const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [editingPostId, setEditingPostId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleEditClick = (postId: string) => {
     if (editingPostId && editingPostId !== postId) {
@@ -28,9 +31,41 @@ export function ChangelogList({ posts }: Props) {
     }
   };
 
-  const handleSave = () => {
-    // In a real app, you'd trigger a data refetch here
-    setEditingPostId(null);
+  const handleSave = async (id: string, newTitle: string, newContent: string) => {
+    setIsSaving(true);
+
+    try {
+      const { error } = await supabase
+        .from("posts")
+        .update({
+          title: newTitle,
+          content: newContent,
+          updated_at: new Date().toISOString()
+        })
+        .eq("id", id);
+
+      if (error) {
+        console.error("Failed to update post:", error.message);
+        // You could show an error toast here
+        return;
+      }
+
+      // Update the local state with the new data
+      setPosts(prevPosts =>
+        prevPosts.map(post =>
+          post.id === id
+            ? { ...post, title: newTitle, content: newContent }
+            : post
+        )
+      );
+
+      setEditingPostId(null);
+    } catch (error) {
+      console.error("Error saving post:", error);
+      // You could show an error toast here
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleCancel = () => {
@@ -87,6 +122,7 @@ export function ChangelogList({ posts }: Props) {
             key={post.id}
             {...post}
             isEditing={editingPostId === post.id}
+            isSaving={isSaving && editingPostId === post.id}
             onEdit={() => handleEditClick(post.id)}
             onSave={handleSave}
             onCancel={handleCancel}
