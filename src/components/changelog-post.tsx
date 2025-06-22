@@ -15,6 +15,7 @@ type Props = {
   published_at: string;
   isEditing: boolean;
   isSaving?: boolean;
+  isAdmin: boolean;
   onEdit: () => void;
   onSave: (id: string, newTitle: string, newContent: string) => void;
   onCancel: () => void;
@@ -399,6 +400,7 @@ export function ChangelogPost({
   published_at,
   isEditing,
   isSaving,
+  isAdmin,
   onEdit,
   onSave,
   onCancel,
@@ -520,25 +522,27 @@ export function ChangelogPost({
               {content}
             </ReactMarkdown>
           </div>
-          <button
-            onClick={onEdit}
-            title="Edit post"
-            className="absolute top-4 right-4 p-2 rounded-md cursor-pointer opacity-0 group-hover:opacity-100 transition-all bg-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-zinc-700 dark:hover:text-white border border-gray-300 dark:border-zinc-700"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          {isAdmin && (
+            <button
+              onClick={onEdit}
+              title="Edit post"
+              className="absolute top-4 right-4 p-2 rounded-md cursor-pointer opacity-0 group-hover:opacity-100 transition-all bg-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-zinc-700 dark:hover:text-white border border-gray-300 dark:border-zinc-700"
             >
-              <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+              </svg>
+            </button>
+          )}
         </>
       )}
     </article>

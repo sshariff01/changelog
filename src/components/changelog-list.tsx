@@ -5,6 +5,7 @@ import { ChangelogPost } from "./changelog-post";
 import { Modal } from "./modal";
 import { Toast, useToast } from "./toast";
 import { supabase } from "@/lib/supabase";
+import { useAdmin } from "@/lib/admin-context";
 
 type Post = {
   id: string;
@@ -29,6 +30,7 @@ export function ChangelogList({ posts: initialPosts }: Props) {
     content: string;
   } | null>(null);
   const { toast, showToast, hideToast } = useToast();
+  const { isAdmin } = useAdmin();
 
   const handleEditClick = (postId: string) => {
     if (editingPostId && editingPostId !== postId) {
@@ -150,6 +152,7 @@ export function ChangelogList({ posts: initialPosts }: Props) {
             {...post}
             isEditing={editingPostId === post.id}
             isSaving={isSaving && editingPostId === post.id}
+            isAdmin={isAdmin}
             onEdit={() => handleEditClick(post.id)}
             onSave={handleSave}
             onCancel={handleCancel}

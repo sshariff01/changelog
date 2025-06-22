@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
+import { useAdmin } from "@/lib/admin-context";
 
 export default function CreatePostPage() {
   const [title, setTitle] = useState("");
@@ -13,6 +14,13 @@ export default function CreatePostPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { isAdmin } = useAdmin();
+
+  useEffect(() => {
+    if (!isAdmin) {
+      router.push("/changelog");
+    }
+  }, [isAdmin, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,6 +45,11 @@ export default function CreatePostPage() {
       router.push("/changelog");
     }
   };
+
+  // Render nothing or a loading spinner while redirecting
+  if (!isAdmin) {
+    return null;
+  }
 
   return (
     <>
