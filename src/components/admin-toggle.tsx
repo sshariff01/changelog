@@ -11,20 +11,20 @@ export function AdminToggle() {
   return (
     <button
       onClick={toggleAdmin}
-      className={`relative flex items-center h-8 w-20 rounded-full cursor-pointer transition-colors duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-purple-500 ${
+      className={`relative flex items-center h-7 w-[70px] rounded-full cursor-pointer transition-colors duration-300 ease-in-out border-2 bg-clip-padding ${
         isAdmin
-          ? isDark ? "bg-purple-600/95" : "bg-purple-300/95"
-          : isDark ? "bg-zinc-700/95" : "bg-gray-300/95"
+          ? isDark ? "bg-purple-800/60 border-purple-500/80" : "bg-purple-200/95 border-purple-300"
+          : isDark ? "bg-zinc-700/95 border-slate-700" : "border-slate-200 bg-transparent"
       }`}
       title={isAdmin ? "Switch to Viewer View" : "Switch to Admin View"}
       aria-label={isAdmin ? "Disable Admin Mode" : "Enable Admin Mode"}
     >
       {/* Sliding indicator with icon */}
       <div
-        className={`absolute top-1 left-1 w-6 h-6 rounded-full flex items-center justify-center shadow-md transform transition-transform duration-300 ease-in-out ${
+        className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full flex items-center justify-center shadow-md transform transition-transform duration-300 ease-in-out ${
           isAdmin
-            ? `translate-x-0 bg-white ${isDark ? "text-purple-600" : "text-purple-600"}`
-            : `translate-x-[48px] bg-white ${isDark ? "text-gray-500" : "text-gray-600"}`
+            ? `translate-x-0 ${isDark ? "bg-[#21012E] text-slate-50" : "bg-white text-purple-600"}`
+            : `translate-x-[42px] ${isDark ? "bg-black text-slate-50" : "bg-white text-gray-600"}`
         }`}
       >
         {isAdmin ? (
@@ -59,16 +59,16 @@ export function AdminToggle() {
 
       {/* Text Labels */}
       <span
-        className={`absolute right-2.5 text-[10px] font-bold transition-opacity duration-300 ${
+        className={`absolute right-2 text-[10px] font-bold transition-opacity duration-300 ${
           isAdmin ? "opacity-100" : "opacity-0"
-        } ${isDark ? "text-white" : "text-purple-700"}`}
+        } ${isDark ? "text-slate-200" : "text-purple-700"}`}
       >
         Admin
       </span>
       <span
-        className={`absolute left-2.5 text-[10px] font-bold transition-opacity duration-300 ${
+        className={`absolute left-2 text-[10px] font-bold transition-opacity duration-300 ${
           !isAdmin ? "opacity-100" : "opacity-0"
-        } ${isDark ? "text-white" : "text-gray-700"}`}
+        } ${isDark ? "text-slate-200" : "text-gray-700"}`}
       >
         Viewer
       </span>
