@@ -6,23 +6,12 @@ import { AdminToggle } from "@/components/admin-toggle";
 import { useAdmin } from "@/lib/admin-context";
 import { useTheme } from "@/lib/theme-context";
 import { useEditing } from "@/lib/editing-context";
-import { useRouter } from "next/navigation";
 
 export function ChangelogHeader() {
   const { isAdmin } = useAdmin();
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const { editingPostId } = useEditing();
-  const router = useRouter();
-
-  const handleNewPostClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (editingPostId) {
-      e.preventDefault();
-      setConflictModalOpen(true);
-    } else {
-      router.push("/create-post");
-    }
-  };
 
   return (
     <div className="flex items-center justify-between mb-8 px-6">

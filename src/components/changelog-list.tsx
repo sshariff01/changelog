@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { ChangelogPost } from "./changelog-post";
 import { Modal } from "./modal";
 import { Toast, useToast } from "./toast";
@@ -34,7 +33,6 @@ export function ChangelogList({ posts: initialPosts }: Props) {
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
   const { toast, showToast, hideToast } = useToast();
   const { isAdmin } = useAdmin();
-  const router = useRouter();
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -52,7 +50,7 @@ export function ChangelogList({ posts: initialPosts }: Props) {
   }, [editingPostId]);
 
   useEffect(() => {
-    const handlePopState = (event: PopStateEvent) => {
+    const handlePopState = () => {
       if (editingPostId) {
         setConflictModalOpen(true);
         history.pushState(null, "", window.location.href);
@@ -61,12 +59,7 @@ export function ChangelogList({ posts: initialPosts }: Props) {
 
     if (editingPostId) {
       history.pushState(null, "", window.location.href);
-      window.addEventListener("popstate", handlePopState);
     }
-
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
   }, [editingPostId, setConflictModalOpen]);
 
   const handleEditClick = (postId: string) => {
