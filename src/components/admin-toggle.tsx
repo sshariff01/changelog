@@ -9,7 +9,7 @@ export function AdminToggle() {
     <button
       onClick={toggleAdmin}
       className={`relative flex items-center h-8 w-20 rounded-full cursor-pointer transition-colors duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-purple-500 ${
-        isAdmin ? "bg-purple-600" : "bg-gray-200 dark:bg-zinc-700"
+        isAdmin ? "bg-purple-600/95" : "bg-gray-200/95 dark:bg-zinc-700/95"
       }`}
       title={isAdmin ? "Switch to Viewer View" : "Switch to Admin View"}
       aria-label={isAdmin ? "Disable Admin Mode" : "Enable Admin Mode"}
@@ -18,8 +18,8 @@ export function AdminToggle() {
       <div
         className={`absolute top-1 left-1 w-6 h-6 rounded-full flex items-center justify-center shadow-md transform transition-transform duration-300 ease-in-out ${
           isAdmin
-            ? "translate-x-[48px] bg-white text-purple-600"
-            : "translate-x-0 bg-white text-gray-500"
+            ? "translate-x-0 bg-white text-purple-600"
+            : "translate-x-[48px] bg-white text-gray-500"
         }`}
       >
         {isAdmin ? (
@@ -54,14 +54,14 @@ export function AdminToggle() {
 
       {/* Text Labels */}
       <span
-        className={`absolute left-2.5 text-[10px] font-bold text-white transition-opacity duration-300 ${
+        className={`absolute right-2.5 text-[10px] font-bold text-white transition-opacity duration-300 ${
           isAdmin ? "opacity-100" : "opacity-0"
         }`}
       >
         Admin
       </span>
       <span
-        className={`absolute right-2.5 text-[10px] font-bold text-white transition-opacity duration-300 ${
+        className={`absolute left-2.5 text-[10px] font-bold text-white transition-opacity duration-300 ${
           !isAdmin ? "opacity-100" : "opacity-0"
         }`}
       >
