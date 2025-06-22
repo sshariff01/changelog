@@ -535,7 +535,7 @@ export function ChangelogPost({
               <button
                 onClick={onEdit}
                 title="Edit post"
-                className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer bg-transparent text-gray-500/80 border border-gray-500/80 transition-colors hover:bg-gray-500 hover:text-white dark:text-gray-400/80 dark:border-gray-400/80 dark:hover:bg-gray-400 dark:hover:text-white dark:hover:border-gray-400"
+                className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer bg-transparent text-gray-500/80 border-[1.5px] border-gray-500/80 transition-colors hover:bg-gray-500 hover:text-white dark:text-gray-400/80 dark:border-gray-400/80 dark:hover:bg-gray-400 dark:hover:text-white dark:hover:border-gray-400"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -554,7 +554,7 @@ export function ChangelogPost({
               <button
                 onClick={onDelete}
                 title="Delete post"
-                className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer bg-transparent text-red-600/80 border border-red-600/80 transition-colors hover:bg-red-600 hover:text-white"
+                className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer bg-transparent text-red-600/80 border-[1.5px] border-red-600/80 transition-colors hover:bg-red-600 hover:text-white"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
