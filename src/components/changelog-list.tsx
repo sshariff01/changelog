@@ -59,7 +59,12 @@ export function ChangelogList({ posts: initialPosts }: Props) {
 
     if (editingPostId) {
       history.pushState(null, "", window.location.href);
+      window.addEventListener("popstate", handlePopState);
     }
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
   }, [editingPostId, setConflictModalOpen]);
 
   const handleEditClick = (postId: string) => {
