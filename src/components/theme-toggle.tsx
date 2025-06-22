@@ -12,7 +12,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      className={`relative w-18 h-9 rounded-full cursor-pointer
+      className={`relative flex items-center w-16 h-8 rounded-full cursor-pointer
   border transition-all duration-300 ease-in-out shadow-inner
   focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2
   ${
@@ -23,17 +23,17 @@ export function ThemeToggle() {
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
     >
       {/* Faint sun icon (inactive in dark mode) */}
-      <div className={`absolute left-2 top-1/2 -translate-y-1/2 text-zinc-700 transition-opacity duration-300 ${theme === 'dark' ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 transition-opacity duration-300 ${theme === 'dark' ? 'opacity-100' : 'opacity-0'}`}>
         <svg
-            width="20"
-            height="20"
+            width="16"
+            height="16"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="w-5 h-5"
+            className="w-4 h-4"
           >
             <circle cx="12" cy="12" r="5" />
             <line x1="12" y1="1" x2="12" y2="3" />
@@ -48,39 +48,39 @@ export function ThemeToggle() {
       </div>
 
       {/* Faint moon icon (inactive in light mode) */}
-      <div className={`absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 transition-opacity duration-300 ${theme === 'light' ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 transition-opacity duration-300 ${theme === 'light' ? 'opacity-100' : 'opacity-0'}`}>
          <svg
-            width="20"
-            height="20"
+            width="16"
+            height="16"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="w-5 h-5"
+            className="w-4 h-4"
           >
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
           </svg>
       </div>
 
       {/* Sliding indicator with the active icon */}
-      <div className={`absolute top-1 w-7 h-7 rounded-full flex items-center justify-center shadow-md transition-all duration-300 ease-in-out ${
+      <div className={`absolute top-1/2 -translate-y-1/2 left-1 w-6 h-6 rounded-full flex items-center justify-center shadow-md transform transition-transform duration-300 ease-in-out ${
         theme === "light"
-          ? "left-1 bg-white text-gray-500"
-          : "left-10 bg-slate-600 text-white"
+          ? "translate-x-0 bg-white text-yellow-500"
+          : "translate-x-[30px] bg-slate-600 text-blue-400"
       }`}>
         {theme === 'light' ? (
            <svg
-            width="20"
-            height="20"
+            width="16"
+            height="16"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="w-5 h-5"
+            className="w-4 h-4"
           >
             <circle cx="12" cy="12" r="5" />
             <line x1="12" y1="1" x2="12" y2="3" />
@@ -94,15 +94,15 @@ export function ThemeToggle() {
           </svg>
         ) : (
           <svg
-            width="20"
-            height="20"
+            width="16"
+            height="16"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="w-5 h-5"
+            className="w-4 h-4"
           >
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
           </svg>

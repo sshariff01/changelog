@@ -8,7 +8,7 @@ export function AdminToggle() {
   return (
     <button
       onClick={toggleAdmin}
-      className={`relative flex items-center h-9 w-22 rounded-full cursor-pointer transition-colors duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-purple-500 ${
+      className={`relative flex items-center h-8 w-20 rounded-full cursor-pointer transition-colors duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-purple-500 ${
         isAdmin ? "bg-purple-600" : "bg-gray-200 dark:bg-zinc-700"
       }`}
       title={isAdmin ? "Switch to Viewer View" : "Switch to Admin View"}
@@ -16,9 +16,9 @@ export function AdminToggle() {
     >
       {/* Sliding indicator with icon */}
       <div
-        className={`absolute top-1 left-1 w-7 h-7 rounded-full flex items-center justify-center shadow-md transform transition-transform duration-300 ease-in-out ${
+        className={`absolute top-1 left-1 w-6 h-6 rounded-full flex items-center justify-center shadow-md transform transition-transform duration-300 ease-in-out ${
           isAdmin
-            ? "translate-x-[52px] bg-white text-purple-600"
+            ? "translate-x-[48px] bg-white text-purple-600"
             : "translate-x-0 bg-white text-gray-500"
         }`}
       >
@@ -31,7 +31,7 @@ export function AdminToggle() {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="w-4 h-4"
+            className="w-3.5 h-3.5"
           >
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
           </svg>
@@ -44,7 +44,7 @@ export function AdminToggle() {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="w-4 h-4"
+            className="w-3.5 h-3.5"
           >
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
             <circle cx="12" cy="12" r="3" />
@@ -54,14 +54,14 @@ export function AdminToggle() {
 
       {/* Text Labels */}
       <span
-        className={`absolute left-3 text-xs font-bold text-white transition-opacity duration-300 ${
+        className={`absolute left-2.5 text-[10px] font-bold text-white transition-opacity duration-300 ${
           isAdmin ? "opacity-100" : "opacity-0"
         }`}
       >
         Admin
       </span>
       <span
-        className={`absolute right-3 text-xs font-bold text-white transition-opacity duration-300 ${
+        className={`absolute right-2.5 text-[10px] font-bold text-white transition-opacity duration-300 ${
           !isAdmin ? "opacity-100" : "opacity-0"
         }`}
       >
