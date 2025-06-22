@@ -13,8 +13,12 @@ export function AdminToggle() {
       onClick={toggleAdmin}
       className={`relative flex items-center h-7 w-[70px] rounded-full cursor-pointer transition-colors duration-300 ease-in-out border-2 bg-clip-padding ${
         isAdmin
-          ? isDark ? "bg-purple-800/60 border-purple-500/80" : "bg-purple-200/95 border-purple-300"
-          : isDark ? "bg-zinc-700/95 border-slate-700" : "border-slate-200 bg-transparent"
+          ? isDark
+            ? "bg-purple-800/60 hover:bg-purple-800/80 border-purple-500/80"
+            : "bg-purple-200/95 hover:bg-purple-300/95 border-purple-300"
+          : isDark
+            ? "bg-zinc-700/95 hover:bg-zinc-600/95 border-slate-700"
+            : "border-slate-200 bg-transparent hover:bg-slate-100"
       }`}
       title={isAdmin ? "Switch to Viewer View" : "Switch to Admin View"}
       aria-label={isAdmin ? "Disable Admin Mode" : "Enable Admin Mode"}
