@@ -31,6 +31,7 @@ export default function CreatePostPage() {
       title,
       content,
       tags: tags.split(",").map((tag) => tag.trim()),
+      status: 'published',
     });
 
     setIsSubmitting(false);

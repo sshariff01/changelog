@@ -6,6 +6,7 @@ async function getPosts() {
   const { data, error } = await supabase
     .from("posts")
     .select("*")
+    .eq("status", "published")
     .order("created_at", { ascending: false });
 
   if (error) {

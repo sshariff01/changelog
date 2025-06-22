@@ -104,7 +104,7 @@ export function ChangelogList({ posts: initialPosts }: Props) {
     try {
       const { error } = await supabase
         .from("posts")
-        .delete()
+        .update({ status: "deleted" })
         .eq("id", pendingDelete);
 
       if (error) {
