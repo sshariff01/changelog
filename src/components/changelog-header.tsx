@@ -5,11 +5,24 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { AdminToggle } from "@/components/admin-toggle";
 import { useAdmin } from "@/lib/admin-context";
 import { useTheme } from "@/lib/theme-context";
+import { useEditing } from "@/lib/editing-context";
+import { useRouter } from "next/navigation";
 
 export function ChangelogHeader() {
   const { isAdmin } = useAdmin();
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const { editingPostId, setConflictModalOpen } = useEditing();
+  const router = useRouter();
+
+  const handleNewPostClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (editingPostId) {
+      e.preventDefault();
+      setConflictModalOpen(true);
+    } else {
+      router.push("/create-post");
+    }
+  };
 
   return (
     <div className="flex items-center justify-between mb-8 px-6">
@@ -21,6 +34,7 @@ export function ChangelogHeader() {
         {isAdmin && (
           <Link
             href="/create-post"
+            onClick={handleNewPostClick}
             className={`group inline-flex items-center justify-center h-8 w-8 rounded-full overflow-hidden transition-all duration-300 ease-in-out border-2 hover:w-28 ${
               isDark
                 ? "border-blue-500 text-blue-300 hover:bg-blue-500/20"

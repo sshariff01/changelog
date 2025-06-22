@@ -6,6 +6,7 @@ import { Modal } from "./modal";
 import { Toast, useToast } from "./toast";
 import { supabase } from "@/lib/supabase";
 import { useAdmin } from "@/lib/admin-context";
+import { useEditing } from "@/lib/editing-context";
 
 type Post = {
   id: string;
@@ -21,7 +22,7 @@ type Props = {
 
 export function ChangelogList({ posts: initialPosts }: Props) {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
-  const [editingPostId, setEditingPostId] = useState<string | null>(null);
+  const { editingPostId, setEditingPostId, isConflictModalOpen, setConflictModalOpen } = useEditing();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [pendingSave, setPendingSave] = useState<{
@@ -35,14 +36,13 @@ export function ChangelogList({ posts: initialPosts }: Props) {
 
   const handleEditClick = (postId: string) => {
     if (editingPostId && editingPostId !== postId) {
-      setIsModalOpen(true);
+      setConflictModalOpen(true);
     } else {
       setEditingPostId(postId);
     }
   };
 
   const handleSave = async (id: string, newTitle: string, newContent: string) => {
-    // Show confirmation dialog first
     setPendingSave({ id, title: newTitle, content: newContent });
     setIsModalOpen(true);
   };
@@ -74,7 +74,6 @@ export function ChangelogList({ posts: initialPosts }: Props) {
         return;
       }
 
-      // Update the local state with the new data
       setPosts(prevPosts =>
         prevPosts.map(post =>
           post.id === pendingSave.id
@@ -97,7 +96,6 @@ export function ChangelogList({ posts: initialPosts }: Props) {
   const confirmDelete = async () => {
     if (!pendingDelete) return;
 
-    // To provide instant feedback, we can optimistically remove the post from the UI.
     const originalPosts = [...posts];
     setPosts(prevPosts => prevPosts.filter(post => post.id !== pendingDelete));
 
@@ -108,7 +106,6 @@ export function ChangelogList({ posts: initialPosts }: Props) {
         .eq("id", pendingDelete);
 
       if (error) {
-        // If the delete fails, revert the UI change and show an error.
         setPosts(originalPosts);
         console.error("Failed to delete post:", error.message);
         showToast("Failed to delete post. Please try again.", "error");
@@ -140,7 +137,7 @@ export function ChangelogList({ posts: initialPosts }: Props) {
   };
 
   const handleEditConflict = () => {
-    setIsModalOpen(false);
+    setConflictModalOpen(false);
   };
 
   return (
@@ -203,7 +200,7 @@ export function ChangelogList({ posts: initialPosts }: Props) {
         ))}
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={pendingSave ? cancelSave : pendingDelete ? cancelDelete : handleEditConflict}>
+      <Modal isOpen={isModalOpen || isConflictModalOpen} onClose={pendingSave ? cancelSave : pendingDelete ? cancelDelete : handleEditConflict}>
         {pendingSave ? (
           <>
             <h3 className="modal-title text-lg font-medium">Confirm Save</h3>
@@ -250,7 +247,7 @@ export function ChangelogList({ posts: initialPosts }: Props) {
           <>
             <h3 className="modal-title text-lg font-medium">Edit In Progress</h3>
             <p className="modal-text text-sm mt-2">
-              Please save or cancel your current changes before editing another post.
+              Please save or cancel your current changes first.
             </p>
             <div className="mt-4 flex justify-end">
               <button
