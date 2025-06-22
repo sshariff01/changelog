@@ -25,7 +25,7 @@ export function ChangelogPost({ title, content, tags, date }: Props) {
           </span>
         ))}
       </div>
-      <div className="prose prose-sm mt-4">
+      <div className="prose prose-sm dark:prose-invert mt-4">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[rehypeHighlight]}
