@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChangelogPost } from "./changelog-post";
 import { Modal } from "./modal";
+import { Toast, useToast } from "./toast";
 import { supabase } from "@/lib/supabase";
 
 type Post = {
@@ -22,6 +23,12 @@ export function ChangelogList({ posts: initialPosts }: Props) {
   const [editingPostId, setEditingPostId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [pendingSave, setPendingSave] = useState<{
+    id: string;
+    title: string;
+    content: string;
+  } | null>(null);
+  const { toast, showToast, hideToast } = useToast();
 
   const handleEditClick = (postId: string) => {
     if (editingPostId && editingPostId !== postId) {
@@ -32,44 +39,64 @@ export function ChangelogList({ posts: initialPosts }: Props) {
   };
 
   const handleSave = async (id: string, newTitle: string, newContent: string) => {
+    // Show confirmation dialog first
+    setPendingSave({ id, title: newTitle, content: newContent });
+    setIsModalOpen(true);
+  };
+
+  const confirmSave = async () => {
+    if (!pendingSave) return;
+
     setIsSaving(true);
+    setIsModalOpen(false);
 
     try {
       const { error } = await supabase
         .from("posts")
         .update({
-          title: newTitle,
-          content: newContent,
+          title: pendingSave.title,
+          content: pendingSave.content,
           updated_at: new Date().toISOString()
         })
-        .eq("id", id);
+        .eq("id", pendingSave.id);
 
       if (error) {
         console.error("Failed to update post:", error.message);
-        // You could show an error toast here
+        showToast("Failed to save changes. Please try again.", "error");
         return;
       }
 
       // Update the local state with the new data
       setPosts(prevPosts =>
         prevPosts.map(post =>
-          post.id === id
-            ? { ...post, title: newTitle, content: newContent }
+          post.id === pendingSave.id
+            ? { ...post, title: pendingSave.title, content: pendingSave.content }
             : post
         )
       );
 
       setEditingPostId(null);
+      showToast("Changes saved successfully!", "success");
     } catch (error) {
       console.error("Error saving post:", error);
-      // You could show an error toast here
+      showToast("An unexpected error occurred. Please try again.", "error");
     } finally {
       setIsSaving(false);
+      setPendingSave(null);
     }
+  };
+
+  const cancelSave = () => {
+    setIsModalOpen(false);
+    setPendingSave(null);
   };
 
   const handleCancel = () => {
     setEditingPostId(null);
+  };
+
+  const handleEditConflict = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -128,21 +155,54 @@ export function ChangelogList({ posts: initialPosts }: Props) {
             onCancel={handleCancel}
           />
         ))}
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <h3 className="modal-title text-lg font-medium">Edit In Progress</h3>
-          <p className="modal-text text-sm mt-2">
-            Please save or cancel your current changes before editing another post.
-          </p>
-          <div className="mt-4 flex justify-end">
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="px-4 py-2 text-sm font-medium rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-zinc-700 dark:text-gray-200 dark:hover:bg-zinc-600"
-            >
-              OK
-            </button>
-          </div>
-        </Modal>
       </div>
+
+      <Modal isOpen={isModalOpen} onClose={pendingSave ? cancelSave : handleEditConflict}>
+        {pendingSave ? (
+          <>
+            <h3 className="modal-title text-lg font-medium">Confirm Save</h3>
+            <p className="modal-text text-sm mt-2">
+              Are you sure you want to save these changes?
+            </p>
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                onClick={cancelSave}
+                className="px-4 py-2 text-sm font-medium rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-zinc-700 dark:text-gray-200 dark:hover:bg-zinc-600"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmSave}
+                className="px-4 py-2 text-sm font-medium rounded-md bg-blue-600 text-white hover:bg-blue-700"
+              >
+                Save Changes
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <h3 className="modal-title text-lg font-medium">Edit In Progress</h3>
+            <p className="modal-text text-sm mt-2">
+              Please save or cancel your current changes before editing another post.
+            </p>
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={handleEditConflict}
+                className="px-4 py-2 text-sm font-medium rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-zinc-700 dark:text-gray-200 dark:hover:bg-zinc-600"
+              >
+                OK
+              </button>
+            </div>
+          </>
+        )}
+      </Modal>
+
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        isVisible={toast.isVisible}
+        onClose={hideToast}
+      />
     </>
   );
 }
