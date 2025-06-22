@@ -13,12 +13,12 @@ export function ThemeToggle() {
     <button
       onClick={toggle}
       className={`relative flex items-center w-16 h-8 rounded-full cursor-pointer
-  border transition-all duration-300 ease-in-out shadow-inner
+  border-2 transition-all duration-300 ease-in-out shadow-inner
   focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2
   ${
     theme === "light"
-      ? "bg-gray-200 border-gray-300"
-      : "bg-zinc-800 border-zinc-600"
+      ? "bg-slate-50 hover:bg-slate-100 border-gray-200 hover:border-gray-300"
+      : "bg-zinc-800 border-zinc-700 hover:border-zinc-600"
   }`}
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
     >
