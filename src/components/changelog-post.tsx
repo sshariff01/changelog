@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeHighlight from "rehype-highlight";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "@/lib/theme-context";
 
 type Props = {
@@ -171,6 +171,27 @@ function useSyntaxHighlighting() {
         .hljs-strong {
           font-weight: bold !important;
         }
+        .edit-button-save {
+          background-color: #2563eb; /* blue-600 */
+          color: white;
+        }
+        .edit-button-save:hover {
+          background-color: #1d4ed8; /* blue-700 */
+        }
+        .edit-button-cancel {
+          background-color: #e5e7eb; /* gray-200 */
+          color: #1f2937; /* gray-800 */
+        }
+        .edit-button-cancel:hover {
+           background-color: #d1d5db; /* gray-300 */
+        }
+        .dark .edit-button-cancel {
+          background-color: #3f3f46; /* zinc-700 */
+          color: #e5e7eb; /* gray-200 */
+        }
+        .dark .edit-button-cancel:hover {
+          background-color: #52525b; /* zinc-600 */
+        }
       `;
     } else {
       // Monokai theme (light) - vibrant colors on light background
@@ -315,6 +336,27 @@ function useSyntaxHighlighting() {
         .hljs-strong {
           font-weight: bold !important;
         }
+        .edit-button-save {
+          background-color: #2563eb; /* blue-600 */
+          color: white;
+        }
+        .edit-button-save:hover {
+          background-color: #1d4ed8; /* blue-700 */
+        }
+        .edit-button-cancel {
+          background-color: #e5e7eb; /* gray-200 */
+          color: #1f2937; /* gray-800 */
+        }
+        .edit-button-cancel:hover {
+           background-color: #d1d5db; /* gray-300 */
+        }
+        .dark .edit-button-cancel {
+          background-color: #3f3f46; /* zinc-700 */
+          color: #e5e7eb; /* gray-200 */
+        }
+        .dark .edit-button-cancel:hover {
+          background-color: #52525b; /* zinc-600 */
+        }
       `;
     }
 
@@ -330,6 +372,10 @@ function useSyntaxHighlighting() {
 export function ChangelogPost({ title, content, tags, published_at }: Props) {
   useSyntaxHighlighting();
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editableTitle, setEditableTitle] = useState(title);
+  const [editableContent, setEditableContent] = useState(content);
+
   const date = new Date(published_at);
   const formattedDate = date.toLocaleDateString("en-US", {
     weekday: "short",
@@ -338,29 +384,121 @@ export function ChangelogPost({ title, content, tags, published_at }: Props) {
     year: "numeric",
   });
 
-  return (
-    <article className="border rounded-xl p-6">
-      <h2 className="text-xl font-semibold">{title}</h2>
-      <div className="text-sm text-gray-500">{formattedDate}</div>
-      <div className="mt-2 flex flex-wrap gap-2">
-        {tags.map((tag) => (
-          <span
-            key={tag}
-            className="bg-gray-100 text-gray-800 px-2 py-0.5 text-xs rounded"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
+  const handleSave = () => {
+    // TODO: Implement actual save logic to the database
+    console.log("Saving:", { title: editableTitle, content: editableContent });
+    setIsEditing(false);
+  };
 
-      <div className="markdown-content mt-4">
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeRaw, rehypeHighlight]}
-        >
-          {content}
-        </ReactMarkdown>
-      </div>
+  const handleCancel = () => {
+    setEditableTitle(title);
+    setEditableContent(content);
+    setIsEditing(false);
+  };
+
+  return (
+    <>
+    <style>
+      {`
+        .edit-button-save {
+          background-color: #2563eb; /* blue-600 */
+          color: white;
+        }
+        .edit-button-save:hover {
+          background-color: #1d4ed8; /* blue-700 */
+        }
+        .edit-button-cancel {
+          background-color: #e5e7eb; /* gray-200 */
+          color: #1f2937; /* gray-800 */
+        }
+        .edit-button-cancel:hover {
+           background-color: #d1d5db; /* gray-300 */
+        }
+        .dark .edit-button-cancel {
+          background-color: #3f3f46; /* zinc-700 */
+          color: #e5e7eb; /* gray-200 */
+        }
+        .dark .edit-button-cancel:hover {
+          background-color: #52525b; /* zinc-600 */
+        }
+      `}
+    </style>
+    <article className="border rounded-xl p-6 relative group">
+      {isEditing ? (
+        <div className="space-y-4">
+          <input
+            type="text"
+            value={editableTitle}
+            onChange={(e) => setEditableTitle(e.target.value)}
+            className="text-xl font-semibold w-full border-b-2 border-gray-300 focus:border-blue-500 outline-none bg-transparent"
+          />
+          <textarea
+            value={editableContent}
+            onChange={(e) => setEditableContent(e.target.value)}
+            rows={10}
+            className="w-full border rounded-md p-2 bg-transparent"
+          />
+          <div className="flex justify-end gap-2">
+            <button
+              onClick={handleCancel}
+              className="edit-button-cancel px-4 py-2 text-sm font-medium rounded-md"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleSave}
+              className="edit-button-save px-4 py-2 text-sm font-medium rounded-md"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <h2 className="text-xl font-semibold">{title}</h2>
+          <div className="text-sm text-gray-500">{formattedDate}</div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="bg-gray-100 text-gray-800 px-2 py-0.5 text-xs rounded"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          <div className="markdown-content mt-4">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw, rehypeHighlight]}
+            >
+              {content}
+            </ReactMarkdown>
+          </div>
+
+          <button
+            onClick={() => setIsEditing(true)}
+            title="Edit post"
+            className="absolute top-4 right-4 rounded-md p-2 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+            </svg>
+          </button>
+        </>
+      )}
     </article>
+    </>
   );
 }
