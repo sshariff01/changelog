@@ -10,7 +10,7 @@ type AdminContextType = {
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
 export function AdminProvider({ children }: { children: ReactNode }) {
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
 
   const toggleAdmin = () => {
     setIsAdmin(prev => !prev);
