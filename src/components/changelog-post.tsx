@@ -1,3 +1,5 @@
+"use client";
+
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
@@ -8,7 +10,7 @@ type Props = {
   title: string;
   content: string;
   tags: string[];
-  date: string;
+  published_at: string;
 };
 
 // Custom hook for dynamic syntax highlighting themes
@@ -272,13 +274,21 @@ function useSyntaxHighlighting() {
   }, [theme]);
 }
 
-export function ChangelogPost({ title, content, tags, date }: Props) {
+export function ChangelogPost({ title, content, tags, published_at }: Props) {
   useSyntaxHighlighting();
+
+  const date = new Date(published_at);
+  const formattedDate = date.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 
   return (
     <article className="border rounded-xl p-6">
       <h2 className="text-xl font-semibold">{title}</h2>
-      <div className="text-sm text-gray-500">{new Date(date).toDateString()}</div>
+      <div className="text-sm text-gray-500">{formattedDate}</div>
       <div className="mt-2 flex flex-wrap gap-2">
         {tags.map((tag) => (
           <span

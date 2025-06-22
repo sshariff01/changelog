@@ -1,13 +1,15 @@
 import { ChangelogPost } from "./changelog-post";
 
+type Post = {
+  id: string;
+  title: string;
+  content: string;
+  tags: string[];
+  published_at: string;
+};
+
 type Props = {
-  posts: {
-    id: string;
-    title: string;
-    content: string;
-    tags: string[];
-    date: string;
-  }[];
+  posts: Post[];
 };
 
 export function ChangelogList({ posts }: Props) {
