@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 import { useAdmin } from "@/lib/admin-context";
+import { useTheme } from "@/lib/theme-context";
 
 export default function CreatePostPage() {
   const [title, setTitle] = useState("");
@@ -15,6 +16,8 @@ export default function CreatePostPage() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { isAdmin } = useAdmin();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   useEffect(() => {
     if (!isAdmin) {
@@ -89,7 +92,11 @@ export default function CreatePostPage() {
           <div className="flex items-center gap-4">
             <Link
               href="/changelog"
-              className="group inline-flex items-center justify-center h-8 w-8 rounded-full overflow-hidden transition-all duration-300 ease-in-out bg-gray-200 text-gray-800 hover:w-40 hover:bg-gray-300 dark:bg-zinc-700 dark:text-gray-200 dark:hover:bg-zinc-600"
+              className={`group inline-flex items-center justify-center h-8 w-8 rounded-full overflow-hidden transition-all duration-300 ease-in-out border-2 hover:w-40 ${
+                isDark
+                  ? "border-slate-600 text-slate-200 hover:bg-slate-700"
+                  : "border-slate-300 text-slate-600 hover:bg-slate-100"
+              }`}
             >
               <svg
                 className="transition-transform duration-300 ease-in-out group-hover:-translate-x-1"

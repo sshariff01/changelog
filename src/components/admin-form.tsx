@@ -106,9 +106,20 @@ export function AdminForm({ posts }: Props) {
           onChange={(e) => setTags(e.target.value)}
           className="w-full p-2 border"
         />
-        <button onClick={handleSave} className="font-bold">
-          {selectedPost ? "Save Changes" : "Create Post"}
-        </button>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleSave}
+            className="inline-flex justify-center items-center gap-2 px-6 h-10 text-sm font-semibold rounded-full transition-all border-transparent bg-blue-600 text-white hover:bg-blue-700"
+          >
+            {selectedPost ? "Save Changes" : "Create Post"}
+          </button>
+          <button
+            onClick={handleNewPost}
+            className="inline-flex justify-center items-center gap-2 px-6 h-10 text-sm font-semibold rounded-full transition-all border-transparent bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-zinc-700 dark:text-gray-200 dark:hover:bg-zinc-600"
+          >
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   );
