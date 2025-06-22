@@ -87,8 +87,28 @@ export default function CreatePostPage() {
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-4xl font-bold">New Post</h1>
           <div className="flex items-center gap-4">
-            <Link href="/changelog" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:underline">
-              Changelog
+            <Link
+              href="/changelog"
+              className="group inline-flex items-center justify-center h-8 w-8 rounded-full overflow-hidden transition-all duration-300 ease-in-out bg-gray-200 text-gray-800 hover:w-40 hover:bg-gray-300 dark:bg-zinc-700 dark:text-gray-200 dark:hover:bg-zinc-600"
+            >
+              <svg
+                className="transition-transform duration-300 ease-in-out group-hover:-translate-x-1"
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+              <span className="opacity-0 w-0 whitespace-nowrap transition-opacity duration-100 ease-in-out group-hover:opacity-100 group-hover:w-auto group-hover:ml-1.5 text-xs font-semibold">
+                Back to Changelog
+              </span>
             </Link>
             <ThemeToggle />
           </div>
@@ -136,7 +156,7 @@ export default function CreatePostPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="inline-flex justify-center items-center gap-2 px-4 h-8 text-xs font-medium rounded-full transition-colors border cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed bg-blue-600 text-white hover:bg-blue-700 border-transparent dark:border-blue-400 dark:bg-transparent dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-white"
+            className="inline-flex justify-center items-center gap-2 px-6 h-10 text-sm font-semibold rounded-full transition-all border border-blue-500/50 bg-blue-100 text-blue-600 hover:bg-blue-200 dark:border-blue-400 dark:bg-transparent dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? "Creating..." : "Create Post"}
           </button>
