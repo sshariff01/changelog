@@ -4,8 +4,9 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
+import Link from "next/link";
 
-export default function AdminPage() {
+export default function CreatePostPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState("");
@@ -42,41 +43,41 @@ export default function AdminPage() {
       <style>
         {`
           /* Light Mode Form Styles */
-          .admin-form-input {
+          .create-post-form-input {
             background-color: #ffffff;
             border: 1px solid #000000;
             color: #000000;
           }
-          .admin-form-label {
+          .create-post-form-label {
             color: #000000;
           }
-          .admin-form-button {
+          .create-post-form-button {
             background-color: #000000;
             color: #ffffff;
           }
-          .admin-form-button:hover {
+          .create-post-form-button:hover {
             background-color: #333333;
           }
 
           /* Dark Mode Form Styles */
-          .dark .admin-form-input {
+          .dark .create-post-form-input {
             background-color: #262626; /* zinc-800/50 is tricky, using a solid color */
             border: 1px solid #52525b; /* zinc-700 */
             color: #e5e5e5; /* gray-200 */
           }
-          .dark .admin-form-label {
+          .dark .create-post-form-label {
             color: #d4d4d8; /* gray-300 */
           }
-          .dark .admin-form-button {
+          .dark .create-post-form-button {
             background-color: #f4f4f5; /* gray-100 */
             color: #18181b; /* gray-900 */
           }
-          .dark .admin-form-button:hover {
+          .dark .create-post-form-button:hover {
             background-color: #e5e5e5; /* gray-200 */
           }
 
           /* Common styles */
-           .admin-form-input:focus {
+           .create-post-form-input:focus {
              outline: 2px solid #3b82f6; /* blue-500 */
              border-color: transparent;
            }
@@ -84,12 +85,17 @@ export default function AdminPage() {
       </style>
       <main className="max-w-3xl mx-auto px-4 py-12">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-4xl font-bold">Admin Portal</h1>
-          <ThemeToggle />
+          <h1 className="text-4xl font-bold">New Post</h1>
+          <div className="flex items-center gap-4">
+            <Link href="/changelog" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:underline">
+              Changelog
+            </Link>
+            <ThemeToggle />
+          </div>
         </div>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="title" className="admin-form-label block text-sm font-medium">
+            <label htmlFor="title" className="create-post-form-label block text-sm font-medium">
               Title
             </label>
             <input
@@ -97,12 +103,12 @@ export default function AdminPage() {
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="admin-form-input mt-1 block w-full rounded-md shadow-sm py-2 px-3"
+              className="create-post-form-input mt-1 block w-full rounded-md shadow-sm py-2 px-3"
               required
             />
           </div>
           <div>
-            <label htmlFor="content" className="admin-form-label block text-sm font-medium">
+            <label htmlFor="content" className="create-post-form-label block text-sm font-medium">
               Content (Markdown)
             </label>
             <textarea
@@ -110,12 +116,12 @@ export default function AdminPage() {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               rows={12}
-              className="admin-form-input mt-1 block w-full rounded-md shadow-sm py-2 px-3"
+              className="create-post-form-input mt-1 block w-full rounded-md shadow-sm py-2 px-3"
               required
             />
           </div>
           <div>
-            <label htmlFor="tags" className="admin-form-label block text-sm font-medium">
+            <label htmlFor="tags" className="create-post-form-label block text-sm font-medium">
               Tags (comma-separated)
             </label>
             <input
@@ -123,14 +129,14 @@ export default function AdminPage() {
               id="tags"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
-              className="admin-form-input mt-1 block w-full rounded-md shadow-sm py-2 px-3"
+              className="create-post-form-input mt-1 block w-full rounded-md shadow-sm py-2 px-3"
               required
             />
           </div>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="admin-form-button inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium shadow-sm disabled:opacity-50"
+            className="create-post-form-button inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium shadow-sm disabled:opacity-50"
           >
             {isSubmitting ? "Creating..." : "Create Post"}
           </button>
