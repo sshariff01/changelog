@@ -51,13 +51,6 @@ export default function CreatePostPage() {
           .create-post-form-label {
             color: #000000;
           }
-          .create-post-form-button {
-            background-color: #000000;
-            color: #ffffff;
-          }
-          .create-post-form-button:hover {
-            background-color: #333333;
-          }
 
           /* Dark Mode Form Styles */
           .dark .create-post-form-input {
@@ -67,13 +60,6 @@ export default function CreatePostPage() {
           }
           .dark .create-post-form-label {
             color: #d4d4d8; /* gray-300 */
-          }
-          .dark .create-post-form-button {
-            background-color: #f4f4f5; /* gray-100 */
-            color: #18181b; /* gray-900 */
-          }
-          .dark .create-post-form-button:hover {
-            background-color: #e5e5e5; /* gray-200 */
           }
 
           /* Common styles */
@@ -136,7 +122,7 @@ export default function CreatePostPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="create-post-form-button inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium shadow-sm disabled:opacity-50"
+            className="inline-flex justify-center items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-colors border cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed bg-blue-600 text-white hover:bg-blue-700 border-transparent dark:border-blue-400 dark:bg-transparent dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-white"
           >
             {isSubmitting ? "Creating..." : "Create Post"}
           </button>
