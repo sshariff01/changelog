@@ -523,7 +523,7 @@ export function ChangelogPost({
           <button
             onClick={onEdit}
             title="Edit post"
-            className="absolute top-4 right-4 p-2 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200 rounded-md cursor-pointer"
+            className="absolute top-4 right-4 p-2 rounded-md cursor-pointer opacity-0 group-hover:opacity-100 transition-all bg-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-zinc-700 dark:hover:text-white border border-gray-300 dark:border-zinc-700"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
