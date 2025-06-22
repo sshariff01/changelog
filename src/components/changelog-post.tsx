@@ -468,10 +468,10 @@ export function ChangelogPost({
       `}
     </style>
     <article
-      className={`relative group rounded-xl p-6 border transition-colors duration-300 ${
+      className={`relative group rounded-xl p-6 transition-colors duration-300 ${
         isEditing
-          ? "border-blue-500"
-          : "border-gray-200 dark:border-zinc-800"
+          ? "border border-blue-500"
+          : "border border-transparent"
       }`}
     >
       {isEditing ? (
@@ -535,7 +535,7 @@ export function ChangelogPost({
               <button
                 onClick={onEdit}
                 title="Edit post"
-                className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer bg-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-zinc-700 dark:hover:text-white border border-gray-300 dark:border-zinc-700"
+                className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer bg-transparent text-gray-500/80 border border-gray-500/80 transition-colors hover:bg-gray-100 hover:text-gray-900 hover:border-gray-900 dark:text-gray-400/80 dark:border-gray-400/80 dark:hover:bg-zinc-700 dark:hover:text-white dark:hover:border-white"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
