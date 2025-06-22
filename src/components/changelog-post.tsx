@@ -465,7 +465,13 @@ export function ChangelogPost({
         }
       `}
     </style>
-    <article className="border rounded-xl p-6 relative group">
+    <article
+      className={`relative group rounded-xl p-6 border transition-colors duration-300 ${
+        isEditing
+          ? "border-blue-500"
+          : "border-gray-200 dark:border-zinc-800"
+      }`}
+    >
       {isEditing ? (
         <div className="space-y-4">
           <div className="date-badge text-xs font-semibold px-2.5 py-1 rounded-full inline-block mb-2">{formattedDate}</div>
@@ -484,14 +490,14 @@ export function ChangelogPost({
           <div className="flex justify-end gap-2">
             <button
               onClick={handleCancel}
-              className="edit-button-cancel px-4 py-2 text-sm font-medium rounded-md cursor-pointer"
+              className="edit-button-cancel px-4 h-8 text-xs font-medium rounded-full cursor-pointer"
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="edit-button-save px-4 py-2 text-sm font-medium rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="edit-button-save px-4 h-8 text-xs font-medium rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSaving ? "Saving..." : "Save"}
             </button>
@@ -526,7 +532,7 @@ export function ChangelogPost({
             <button
               onClick={onEdit}
               title="Edit post"
-              className="absolute top-4 right-4 p-2 rounded-md cursor-pointer opacity-0 group-hover:opacity-100 transition-all bg-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-zinc-700 dark:hover:text-white border border-gray-300 dark:border-zinc-700"
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-all bg-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-zinc-700 dark:hover:text-white border border-gray-300 dark:border-zinc-700"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -170,13 +170,13 @@ export function ChangelogList({ posts: initialPosts }: Props) {
             <div className="mt-4 flex justify-end gap-2">
               <button
                 onClick={cancelSave}
-                className="px-4 py-2 text-sm font-medium rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-zinc-700 dark:text-gray-200 dark:hover:bg-zinc-600 cursor-pointer"
+                className="px-4 h-8 text-xs font-medium rounded-full bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-zinc-700 dark:text-gray-200 dark:hover:bg-zinc-600 cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={confirmSave}
-                className="px-4 py-2 text-sm font-medium rounded-md bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+                className="px-4 h-8 text-xs font-medium rounded-full bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
               >
                 Save Changes
               </button>
@@ -191,7 +191,7 @@ export function ChangelogList({ posts: initialPosts }: Props) {
             <div className="mt-4 flex justify-end">
               <button
                 onClick={handleEditConflict}
-                className="px-4 py-2 text-sm font-medium rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-zinc-700 dark:text-gray-200 dark:hover:bg-zinc-600 cursor-pointer"
+                className="px-4 h-8 text-xs font-medium rounded-full bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-zinc-700 dark:text-gray-200 dark:hover:bg-zinc-600 cursor-pointer"
               >
                 OK
               </button>

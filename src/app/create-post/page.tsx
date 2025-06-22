@@ -135,7 +135,7 @@ export default function CreatePostPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="inline-flex justify-center items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-colors border cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed bg-blue-600 text-white hover:bg-blue-700 border-transparent dark:border-blue-400 dark:bg-transparent dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-white"
+            className="inline-flex justify-center items-center gap-2 px-4 h-8 text-xs font-medium rounded-full transition-colors border cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed bg-blue-600 text-white hover:bg-blue-700 border-transparent dark:border-blue-400 dark:bg-transparent dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-white"
           >
             {isSubmitting ? "Creating..." : "Create Post"}
           </button>
