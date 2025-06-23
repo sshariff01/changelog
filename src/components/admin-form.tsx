@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 
 type Post = {
   id: string;
@@ -45,6 +45,8 @@ export function AdminForm({ posts }: Props) {
       published_at: new Date().toISOString(),
     };
 
+    const supabase = createClient();
+
     if (selectedPost) {
       // Update existing post
       const { error } = await supabase
@@ -73,14 +75,14 @@ export function AdminForm({ posts }: Props) {
   return (
     <div>
       <div className="flex justify-end mb-4">
-        <button onClick={handleNewPost} className="font-bold">New Post</button>
+        <button onClick={handleNewPost} className="font-bold cursor-pointer">New Post</button>
       </div>
 
       <ul className="space-y-2 mb-8">
         {posts.map((post) => (
           <li key={post.id} className="flex justify-between items-center">
             <span>{post.title}</span>
-            <button onClick={() => handleSelectPost(post)}>Edit</button>
+            <button onClick={() => handleSelectPost(post)} className="cursor-pointer">Edit</button>
           </li>
         ))}
       </ul>
@@ -109,13 +111,13 @@ export function AdminForm({ posts }: Props) {
         <div className="flex items-center gap-4">
           <button
             onClick={handleSave}
-            className="inline-flex justify-center items-center gap-2 px-6 h-10 text-sm font-semibold rounded-full transition-all border-transparent bg-blue-600 text-white hover:bg-blue-700"
+            className="inline-flex justify-center items-center gap-2 px-6 h-10 text-sm font-semibold rounded-full transition-all border-transparent bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
           >
             {selectedPost ? "Save Changes" : "Create Post"}
           </button>
           <button
             onClick={handleNewPost}
-            className="inline-flex justify-center items-center gap-2 px-6 h-10 text-sm font-semibold rounded-full transition-all border-transparent bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-zinc-700 dark:text-gray-200 dark:hover:bg-zinc-600"
+            className="inline-flex justify-center items-center gap-2 px-6 h-10 text-sm font-semibold rounded-full transition-all border-transparent bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-zinc-700 dark:text-gray-200 dark:hover:bg-zinc-600 cursor-pointer"
           >
             Cancel
           </button>

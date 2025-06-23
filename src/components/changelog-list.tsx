@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { ChangelogPost } from "./changelog-post";
 import { Modal } from "./modal";
 import { Toast, useToast } from "./toast";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { useAdmin } from "@/lib/admin-context";
 import { useEditing } from "@/lib/editing-context";
 
@@ -92,6 +92,7 @@ export function ChangelogList({ posts: initialPosts }: Props) {
     setIsModalOpen(false);
 
     try {
+      const supabase = createClient();
       const { error } = await supabase
         .from("posts")
         .update({
@@ -133,6 +134,7 @@ export function ChangelogList({ posts: initialPosts }: Props) {
     setPosts(prevPosts => prevPosts.filter(post => post.id !== pendingDelete));
 
     try {
+      const supabase = createClient();
       const { error } = await supabase
         .from("posts")
         .update({ status: "deleted" })

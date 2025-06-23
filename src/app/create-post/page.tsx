@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
@@ -30,6 +30,7 @@ export default function CreatePostPage() {
     setIsSubmitting(true);
     setError(null);
 
+    const supabase = createClient();
     const { error: insertError } = await supabase.from("posts").insert({
       title,
       content,
