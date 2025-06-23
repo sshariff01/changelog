@@ -43,9 +43,9 @@ export default async function ChangelogPage() {
   const [posts, user] = await Promise.all([getPosts(), getUser()]);
 
   return (
-    <main className="max-w-2xl mx-auto py-12 px-6">
+    <main className="container mx-auto py-8 max-w-2xl">
       <ChangelogHeader user={user} />
-      <ChangelogList posts={posts} />
+      <ChangelogList posts={posts} user={user} />
     </main>
   );
 }

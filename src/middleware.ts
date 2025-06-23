@@ -33,7 +33,7 @@ export async function middleware(request: NextRequest) {
 
   // If user is not signed in and is trying to access a protected route,
   // redirect them to the login page.
-  if (!user && (request.nextUrl.pathname.startsWith('/changelog') || request.nextUrl.pathname.startsWith('/create-post') || request.nextUrl.pathname.startsWith('/settings'))) {
+  if (!user && (request.nextUrl.pathname.startsWith('/create-post') || request.nextUrl.pathname.startsWith('/settings'))) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 

@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 import { useAdmin } from "@/lib/admin-context";
 import { useTheme } from "@/lib/theme-context";
+import { UserAvatar } from "@/components/user-avatar";
 
 export default function CreatePostPage() {
   const [title, setTitle] = useState("");
@@ -14,6 +15,7 @@ export default function CreatePostPage() {
   const [tags, setTags] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<any>(null);
   const router = useRouter();
   const { isAdmin } = useAdmin();
   const { theme } = useTheme();
@@ -24,6 +26,25 @@ export default function CreatePostPage() {
       router.push("/changelog");
     }
   }, [isAdmin, router]);
+
+  useEffect(() => {
+    async function getUser() {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("username, first_name, last_name")
+          .eq("id", user.id)
+          .single();
+
+        setUser({ ...user, profile });
+      }
+    }
+
+    getUser();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,12 +67,10 @@ export default function CreatePostPage() {
       setTitle("");
       setContent("");
       setTags("");
-      // Redirect to the changelog page to see the new post
       router.push("/changelog");
     }
   };
 
-  // Render nothing or a loading spinner while redirecting
   if (!isAdmin) {
     return null;
   }
@@ -72,32 +91,28 @@ export default function CreatePostPage() {
 
           /* Dark Mode Form Styles */
           .dark .create-post-form-input {
-            background-color: #262626; /* zinc-800/50 is tricky, using a solid color */
-            border: 1px solid #52525b; /* zinc-700 */
-            color: #e5e5e5; /* gray-200 */
+            background-color: #262626;
+            border: 1px solid #52525b;
+            color: #e5e5e5;
           }
           .dark .create-post-form-label {
-            color: #d4d4d8; /* gray-300 */
+            color: #d4d4d8;
           }
 
           /* Common styles */
            .create-post-form-input:focus {
-             outline: 2px solid #3b82f6; /* blue-500 */
+             outline: 2px solid #3b82f6;
              border-color: transparent;
            }
         `}
       </style>
-      <main className="max-w-3xl mx-auto px-4 py-12">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-4xl font-bold">New Post</h1>
+      <main className="container mx-auto py-8 max-w-2xl">
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold">New Post</h1>
           <div className="flex items-center gap-4">
             <Link
               href="/changelog"
-              className={`group inline-flex items-center justify-center h-8 w-8 rounded-full overflow-hidden transition-all duration-300 ease-in-out border-2 hover:w-40 ${
-                isDark
-                  ? "border-slate-600 text-slate-200 hover:bg-slate-700"
-                  : "border-slate-300 text-slate-600 hover:bg-slate-100"
-              }`}
+              className={`group inline-flex items-center justify-center h-8 w-8 rounded-full overflow-hidden transition-all duration-300 ease-in-out border-2 hover:w-40 border-border hover:bg-muted text-foreground`}
             >
               <svg
                 className="transition-transform duration-300 ease-in-out group-hover:-translate-x-1"
@@ -119,9 +134,10 @@ export default function CreatePostPage() {
               </span>
             </Link>
             <ThemeToggle />
+            <UserAvatar user={user} />
           </div>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6 mt-8">
           <div>
             <label htmlFor="title" className="create-post-form-label block text-sm font-medium">
               Title
@@ -165,7 +181,7 @@ export default function CreatePostPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex justify-center items-center gap-2 px-6 h-10 text-sm font-semibold rounded-full transition-all border border-blue-500/50 bg-blue-100 text-blue-600 hover:bg-blue-200 dark:border-blue-400 dark:bg-transparent dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="bg-blue-600 hover:bg-blue-500 text-white h-10 px-4 text-sm font-medium rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? "Creating..." : "Create Post"}
             </button>

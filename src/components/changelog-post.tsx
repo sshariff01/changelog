@@ -6,6 +6,7 @@ import rehypeRaw from "rehype-raw";
 import rehypeHighlight from "rehype-highlight";
 import { useEffect, useState } from "react";
 import { useTheme } from "@/lib/theme-context";
+import { User } from "@supabase/supabase-js";
 
 type Props = {
   id: string;
@@ -16,6 +17,7 @@ type Props = {
   isEditing: boolean;
   isSaving?: boolean;
   isAdmin: boolean;
+  user: User | null;
   onEdit: () => void;
   onSave: (id: string, newTitle: string, newContent: string) => void;
   onCancel: () => void;
@@ -402,6 +404,7 @@ export function ChangelogPost({
   isEditing,
   isSaving,
   isAdmin,
+  user,
   onEdit,
   onSave,
   onCancel,
@@ -452,8 +455,8 @@ export function ChangelogPost({
     <article
       className={`relative group rounded-xl py-6 transition-colors duration-300 ${
         isEditing
-          ? "border border-blue-500"
-          : "border border-transparent"
+          ? ""
+          : ""
       }`}
     >
       {isEditing ? (
@@ -551,7 +554,7 @@ export function ChangelogPost({
               {content}
             </ReactMarkdown>
           </div>
-          {isAdmin && (
+          {isAdmin && user && (
             <div className="absolute top-4 right-0 flex items-center gap-2 transition-opacity">
               <button
                 onClick={onEdit}

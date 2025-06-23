@@ -7,6 +7,7 @@ import { Toast, useToast } from "./toast";
 import { createClient } from "@/lib/supabase/client";
 import { useAdmin } from "@/lib/admin-context";
 import { useEditing } from "@/lib/editing-context";
+import { User } from "@supabase/supabase-js";
 
 type Post = {
   id: string;
@@ -18,9 +19,10 @@ type Post = {
 
 type Props = {
   posts: Post[];
+  user: User | null;
 };
 
-export function ChangelogList({ posts: initialPosts }: Props) {
+export function ChangelogList({ posts: initialPosts, user }: Props) {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
   const { editingPostId, setEditingPostId, isConflictModalOpen, setConflictModalOpen } = useEditing();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -219,21 +221,22 @@ export function ChangelogList({ posts: initialPosts }: Props) {
           }
         `}
       </style>
-      <div className="space-y-12">
-        {posts.map((post) => (
+    <div className="space-y-12 mt-8">
+      {posts.map((post) => (
           <ChangelogPost
             key={post.id}
             {...post}
             isEditing={editingPostId === post.id}
             isSaving={isSaving && editingPostId === post.id}
-            isAdmin={isAdmin && !editingPostId}
+            isAdmin={isAdmin}
+            user={user}
             onEdit={() => handleEditClick(post.id)}
             onSave={handleSave}
             onCancel={handleCancel}
             onDelete={() => handleDeleteClick(post.id)}
           />
-        ))}
-      </div>
+      ))}
+    </div>
 
       <Modal isOpen={isModalOpen || isConflictModalOpen} onClose={pendingSave ? cancelSave : pendingDelete ? cancelDelete : handleEditConflict}>
         {pendingSave ? (

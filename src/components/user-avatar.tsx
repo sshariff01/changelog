@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Settings, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { LoadingModal } from "@/components/loading-modal";
+import { useTheme } from "@/lib/theme-context";
+import Link from "next/link";
 
 interface UserAvatarProps {
   user: (User & { profile?: { username: string; first_name: string; last_name: string } }) | null;
@@ -17,6 +19,8 @@ export function UserAvatar({ user }: UserAvatarProps) {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -38,11 +42,6 @@ export function UserAvatar({ user }: UserAvatarProps) {
       console.log('Starting logout process...');
       const result = await logoutWithoutRedirect();
       console.log('Logout result:', result);
-
-      // Add a small delay to ensure the session is properly cleared
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      // The LoadingModal will handle the redirect after showing the success message
     } catch (error) {
       console.error('Logout failed:', error);
       setIsLoggingOut(false);
@@ -51,86 +50,149 @@ export function UserAvatar({ user }: UserAvatarProps) {
 
   const handleLogoutComplete = () => {
     console.log('Logout complete, redirecting to login...');
-    // Use window.location for a hard redirect to ensure middleware picks up the session change
     window.location.href = '/login';
   };
 
-  if (!user) return null;
-
   const getInitial = () => {
-    if (user.profile?.first_name) {
+    if (user?.profile?.first_name) {
       return user.profile.first_name.charAt(0).toUpperCase();
     }
-    if (user.profile?.username) {
+    if (user?.profile?.username) {
       return user.profile.username.charAt(0).toUpperCase();
     }
-    if (user.email) {
+    if (user?.email) {
       return user.email.charAt(0).toUpperCase();
     }
     return "U";
   };
 
   const getUserDisplayName = () => {
-    if (user.profile?.first_name && user.profile?.last_name) {
+    if (user?.profile?.first_name && user?.profile?.last_name) {
       return `${user.profile.first_name} ${user.profile.last_name}`;
     }
-    if (user.profile?.username) {
+    if (user?.profile?.username) {
       return user.profile.username;
     }
-    return user.email;
+    return user?.email;
   };
 
   return (
     <>
       <div className="relative" ref={dropdownRef}>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-10 w-10 rounded-full p-0 hover:bg-muted/50 transition-colors"
+        <button
           onClick={() => setIsOpen(!isOpen)}
-        >
-          <div className="h-10 w-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
-            {getInitial()}
-          </div>
-        </Button>
-
-        <div
-          className={`absolute right-0 top-12 w-48 bg-background border border-border rounded-lg shadow-lg z-50 transition-all duration-200 ease-in-out ${
-            isOpen
-              ? 'opacity-100 scale-100 translate-y-0'
-              : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
+          className={`relative flex items-center justify-center h-10 w-10 rounded-full overflow-hidden transition-all duration-300 ease-in-out border-2 cursor-pointer ${
+            isDark
+              ? "border-gray-600 text-gray-300 hover:bg-gray-700 hover:border-gray-500 hover:text-gray-100"
+              : "border-gray-300 text-gray-600 hover:bg-gray-600 hover:border-gray-600 hover:text-gray-100"
           }`}
         >
-          <div className="p-3 border-b border-border">
-            <div className="text-sm font-medium">{getUserDisplayName()}</div>
-            <div className="text-xs text-muted-foreground">{user.email}</div>
-          </div>
-
-          <div className="p-1">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="w-full justify-start text-sm"
-              onClick={() => {
-                setIsOpen(false);
-                router.push('/settings');
-              }}
+          {user ? (
+            <span className="text-sm font-medium">
+              {user.profile?.first_name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}
+            </span>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="transition-colors duration-300"
             >
-              <Settings className="h-4 w-4 mr-2" />
-              Settings
-            </Button>
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          )}
+        </button>
 
-            <Button
-              variant="ghost"
-              size="sm"
-              className="w-full justify-start text-sm text-destructive hover:text-destructive"
-              onClick={handleLogout}
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
+        {isOpen && (
+          <div
+            className={`absolute right-0 mt-2 w-40 rounded-lg shadow-lg py-1 z-50 ${
+              isDark ? "bg-zinc-800 border border-zinc-700" : "bg-white border border-gray-200"
+            }`}
+          >
+            {user ? (
+              <>
+                <div className="p-2.5 border-b border-border">
+                  <div className="text-sm font-medium truncate">{getUserDisplayName()}</div>
+                  <div className="text-xs text-muted-foreground truncate">{user.email}</div>
+                </div>
+
+                <div className="p-1">
+                  <Link
+                    href="/settings"
+                    className={`flex items-center gap-2 px-3 py-2 text-sm transition-colors duration-200 ${
+                      isDark
+                        ? "hover:bg-zinc-700 text-zinc-100"
+                        : "hover:bg-gray-100 text-gray-700"
+                    }`}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    Settings
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className={`flex items-center gap-2 px-3 py-2 text-sm w-full text-left transition-colors duration-200 ${
+                      isDark
+                        ? "hover:bg-zinc-700 text-red-400 hover:text-red-300"
+                        : "hover:bg-gray-100 text-red-600 hover:text-red-500"
+                    }`}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                      <polyline points="16 17 21 12 16 7"></polyline>
+                      <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Logout
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="p-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full justify-start text-sm"
+                  onClick={() => {
+                    setIsOpen(false);
+                    router.push('/login');
+                  }}
+                >
+                  <LogOut className="h-3.5 w-3.5 mr-2" />
+                  Login
+                </Button>
+              </div>
+            )}
           </div>
-        </div>
+        )}
       </div>
 
       <LoadingModal

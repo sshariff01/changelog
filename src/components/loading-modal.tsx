@@ -14,21 +14,24 @@ export function LoadingModal({ isOpen, onComplete, operation = 'login' }: Loadin
 
   useEffect(() => {
     if (isOpen) {
-      // Show loading for a minimum of 3.5 seconds for better UX
+      const loadingDuration = 2500; // 2.5s for both login and logout
+      const successDuration = 2500; // 2.5s for both login and logout
+
+      // Show loading for a minimum duration for better UX
       const timer = setTimeout(() => {
         setStage('success')
         // Give user time to see success message before redirect
         const redirectTimer = setTimeout(() => {
           onComplete?.()
-        }, 2000) // Show success for 2 seconds
+        }, successDuration)
         return () => clearTimeout(redirectTimer)
-      }, 3500) // Show loading for 3.5 seconds minimum
+      }, loadingDuration)
 
       return () => clearTimeout(timer)
     } else {
       setStage('loading')
     }
-  }, [isOpen, onComplete])
+  }, [isOpen, onComplete, operation])
 
   if (!isOpen) return null
 

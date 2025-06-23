@@ -21,37 +21,12 @@ export function ChangelogHeader({ user }: ChangelogHeaderProps) {
   const { editingPostId } = useEditing();
 
   return (
-    <div className="flex items-start justify-between mb-8">
-      <div className="flex flex-col gap-3">
-        <h1 className="text-3xl md:text-4xl font-bold">Changelog</h1>
-        {user && (
-          <div>
-            <AdminToggle />
-          </div>
-        )}
-      </div>
-
-      <div className="flex flex-col items-end gap-3 pt-1">
-        {user ? (
-          <UserAvatar user={user} />
-        ) : (
-          <div className="flex gap-2">
-            <Link href="/login">
-              <Button variant="outline" size="sm">
-                Login
-              </Button>
-            </Link>
-            <Link href="/signup">
-              <Button size="sm">
-                Sign Up
-              </Button>
-            </Link>
-          </div>
-        )}
-
-        <div className="flex items-center gap-2">
-          <div className="hidden md:flex">
-            {isAdmin && !editingPostId && (
+    <>
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold">Changelog</h1>
+        <div className="flex items-center gap-4">
+          {isAdmin && !editingPostId && user && (
+            <div className="hidden md:block">
               <Link
                 href="/create-post"
                 className={`group inline-flex items-center justify-center h-8 w-8 rounded-full overflow-hidden transition-all duration-300 ease-in-out border-2 hover:w-28 ${
@@ -79,11 +54,17 @@ export function ChangelogHeader({ user }: ChangelogHeaderProps) {
                   New Post
                 </span>
               </Link>
-            )}
-          </div>
+            </div>
+          )}
           <ThemeToggle />
+          <UserAvatar user={user} />
         </div>
       </div>
-    </div>
+      {user && (
+        <div className="mt-4">
+          <AdminToggle />
+        </div>
+      )}
+    </>
   );
 }

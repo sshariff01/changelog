@@ -12,24 +12,30 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>("dark");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     // Check if theme is stored in localStorage
     const storedTheme = localStorage.getItem("theme") as Theme | null;
     if (storedTheme) {
       setTheme(storedTheme);
     }
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
 
     // Apply theme to document
     document.documentElement.classList.remove("light", "dark");
     document.documentElement.classList.add(theme);
-  }, [theme]);
+    localStorage.setItem("theme", theme);
+  }, [theme, mounted]);
 
   const value = {
     theme,
     setTheme: (newTheme: Theme) => {
       setTheme(newTheme);
-      localStorage.setItem("theme", newTheme);
     },
   };
 
