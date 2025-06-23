@@ -450,7 +450,7 @@ export function ChangelogPost({
       `}
     </style>
     <article
-      className={`relative group rounded-xl p-6 transition-colors duration-300 ${
+      className={`relative group rounded-xl py-6 transition-colors duration-300 ${
         isEditing
           ? "border border-blue-500"
           : "border border-transparent"
@@ -552,7 +552,7 @@ export function ChangelogPost({
             </ReactMarkdown>
           </div>
           {isAdmin && (
-            <div className="absolute top-4 right-6 flex items-center gap-2 transition-opacity">
+            <div className="absolute top-4 right-0 flex items-center gap-2 transition-opacity">
               <button
                 onClick={onEdit}
                 title="Edit post"

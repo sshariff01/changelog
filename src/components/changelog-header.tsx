@@ -14,10 +14,10 @@ export function ChangelogHeader() {
   const { editingPostId } = useEditing();
 
   return (
-    <div className="flex items-start justify-between mb-8 px-2 md:px-6">
+    <div className="flex items-start justify-between mb-8">
       <div className="flex flex-col gap-3">
         <h1 className="text-3xl md:text-4xl font-bold">Changelog</h1>
-        <div className="hidden md:block">
+        <div>
           <AdminToggle />
         </div>
       </div>
