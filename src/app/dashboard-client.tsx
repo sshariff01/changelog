@@ -9,6 +9,7 @@ import { UserAvatar } from '@/components/user-avatar';
 import { CreateOrganizationModal } from "@/components/create-organization-modal";
 import { createOrganization } from "@/app/organizations/actions";
 import Link from 'next/link';
+import { User as SupabaseUser } from '@supabase/supabase-js';
 
 interface Organization {
   id: string;
@@ -19,9 +20,7 @@ interface Organization {
   role: 'owner' | 'admin' | 'viewer';
 }
 
-interface User {
-  id: string;
-  email: string;
+interface User extends SupabaseUser {
   profile?: {
     username?: string | null;
     first_name?: string | null;
@@ -36,10 +35,8 @@ interface DashboardClientProps {
 
 export function DashboardClient({ user, organizations }: DashboardClientProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isCreating, setIsCreating] = useState(false);
 
   const handleCreateOrganization = async (data: { name: string; slug: string; logo?: File }) => {
-    setIsCreating(true);
     try {
       const formData = new FormData();
       formData.append("name", data.name);
@@ -54,8 +51,6 @@ export function DashboardClient({ user, organizations }: DashboardClientProps) {
       window.location.reload();
     } catch (error) {
       throw error;
-    } finally {
-      setIsCreating(false);
     }
   };
 

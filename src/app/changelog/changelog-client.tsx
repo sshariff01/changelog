@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { GitBranch, Plus, Eye, Settings } from "lucide-react";
+import { GitBranch, Plus, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AdminToggle } from "@/components/admin-toggle";
 import { UserAvatar } from '@/components/user-avatar';
@@ -39,7 +39,7 @@ interface ChangelogClientProps {
 }
 
 export function ChangelogClient({ organization, changelog, posts }: ChangelogClientProps) {
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin] = useState(false);
 
   return (
     <>
@@ -112,7 +112,7 @@ export function ChangelogClient({ organization, changelog, posts }: ChangelogCli
                   No posts yet
                 </h4>
                 <p className="text-muted-foreground text-center mb-6 max-w-md">
-                  This changelog doesn't have any posts yet. Check back soon for updates!
+                  This changelog doesn&apos;t have any posts yet. Check back soon for updates!
                 </p>
                 {isAdmin && (
                   <Button asChild>
@@ -126,7 +126,21 @@ export function ChangelogClient({ organization, changelog, posts }: ChangelogCli
             </Card>
           ) : (
             posts.map((post) => (
-              <ChangelogPost key={post.id} post={post} />
+              <ChangelogPost
+                key={post.id}
+                id={post.id}
+                title={post.title}
+                content={post.content}
+                tags={[]}
+                published_at={post.published_at}
+                isEditing={false}
+                isAdmin={isAdmin}
+                user={null}
+                onEdit={() => {}}
+                onSave={() => {}}
+                onCancel={() => {}}
+                onDelete={() => {}}
+              />
             ))
           )}
         </div>

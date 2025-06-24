@@ -2,6 +2,15 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { DashboardClient } from './dashboard-client'
 
+interface Organization {
+  id: string;
+  name: string;
+  slug: string;
+  logo_url?: string | null;
+  created_at: string;
+  role: 'owner' | 'admin' | 'viewer';
+}
+
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
@@ -35,13 +44,19 @@ async function getUserWithOrganizations() {
     `)
     .eq('user_id', user.id)
 
-  const mappedOrganizations = organizationMembers?.map((member) => ({
-    id: member.organizations.id,
-    name: member.organizations.name,
-    slug: member.organizations.slug,
-    created_at: member.organizations.created_at,
-    role: member.role,
-  })) || []
+  const mappedOrganizations = (organizationMembers?.map((member) => {
+    const org = Array.isArray(member.organizations)
+      ? member.organizations[0]
+      : member.organizations;
+    if (!org) return null;
+    return {
+      id: org.id,
+      name: org.name,
+      slug: org.slug,
+      created_at: org.created_at,
+      role: member.role,
+    };
+  }).filter((org) => org !== null) as Organization[]) || [];
 
   return {
     user: { ...user, profile },

@@ -148,7 +148,7 @@ export function CreateOrganizationModal({ isOpen, onClose, onSubmit }: CreateOrg
                 disabled={isSubmitting}
               />
               <p className="text-xs text-muted-foreground">
-                This will be used as your organization's subdomain
+                This will be used as your organization&apos;s subdomain
               </p>
             </div>
 
@@ -167,7 +167,7 @@ export function CreateOrganizationModal({ isOpen, onClose, onSubmit }: CreateOrg
                     <div className="flex-1">
                       <p className="text-sm font-medium">{logo?.name}</p>
                       <p className="text-xs text-muted-foreground">
-                        {(logo?.size / 1024 / 1024).toFixed(2)} MB
+                        {logo && logo.size !== undefined ? `${(logo.size / 1024 / 1024).toFixed(2)} MB` : ''}
                       </p>
                     </div>
                     <Button

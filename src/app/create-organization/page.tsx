@@ -2,21 +2,30 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { ArrowLeft, Building2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { UserAvatar } from '@/components/user-avatar'
-import { Building2, ArrowLeft } from 'lucide-react'
-import Link from 'next/link'
+import { User as SupabaseUser } from '@supabase/supabase-js'
+
+interface User extends SupabaseUser {
+  profile?: {
+    username?: string;
+    first_name?: string;
+    last_name?: string;
+  } | null;
+}
 
 export default function CreateOrganizationPage() {
   const [name, setName] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
   const router = useRouter()
 
   // Get user data on component mount
@@ -72,7 +81,7 @@ export default function CreateOrganizationPage() {
         .from('organization_members')
         .insert({
           organization_id: org.id,
-          profile_id: user.id,
+          profile_id: user?.id,
           role: 'owner'
         })
 
@@ -82,8 +91,9 @@ export default function CreateOrganizationPage() {
 
       // Redirect to the new organization's changelog
       router.push(`/changelog?org=${org.id}`)
-    } catch (err: any) {
-      setError(err.message || 'Failed to create organization')
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to create organization'
+      setError(errorMessage)
       setIsSubmitting(false)
     }
   }

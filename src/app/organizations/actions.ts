@@ -2,7 +2,6 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 export async function createOrganization(formData: FormData) {
   const supabase = await createClient();
@@ -45,7 +44,7 @@ export async function createOrganization(formData: FormData) {
     const fileName = `${slug}-logo-${Date.now()}.${fileExt}`;
     const filePath = `organization-logos/${fileName}`;
 
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from('avatars') // Using existing bucket, you might want to create a dedicated bucket
       .upload(filePath, logoFile, {
         cacheControl: '3600',
@@ -149,12 +148,20 @@ export async function getOrganizations() {
     throw new Error("Failed to fetch organizations");
   }
 
-  return organizations.map((member) => ({
-    id: member.organizations.id,
-    name: member.organizations.name,
-    slug: member.organizations.slug,
-    logo_url: member.organizations.logo_url,
-    created_at: member.organizations.created_at,
-    role: member.role,
-  }));
+  return organizations
+    .map((member) => {
+      const org = Array.isArray(member.organizations)
+        ? member.organizations[0]
+        : member.organizations;
+      if (!org) return null;
+      return {
+        id: org.id,
+        name: org.name,
+        slug: org.slug,
+        logo_url: org.logo_url,
+        created_at: org.created_at,
+        role: member.role,
+      };
+    })
+    .filter(Boolean);
 }
