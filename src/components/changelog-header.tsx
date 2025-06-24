@@ -8,7 +8,6 @@ import { useAdmin } from "@/lib/admin-context";
 import { useTheme } from "@/lib/theme-context";
 import { useEditing } from "@/lib/editing-context";
 import { User } from "@supabase/supabase-js";
-import { Button } from "@/components/ui/button";
 
 interface ChangelogHeaderProps {
   user: (User & { profile?: { username: string; first_name: string; last_name: string } }) | null;
@@ -56,8 +55,10 @@ export function ChangelogHeader({ user }: ChangelogHeaderProps) {
               </Link>
             </div>
           )}
-          <ThemeToggle />
-          <UserAvatar user={user} />
+          <div className={`flex items-center ${isAdmin ? 'gap-4' : 'gap-0'}`}>
+            <ThemeToggle />
+            {isAdmin && <UserAvatar user={user} />}
+          </div>
         </div>
       </div>
       {user && (
