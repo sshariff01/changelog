@@ -87,10 +87,10 @@ export function UserAvatar({ user }: UserAvatarProps) {
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`h-8 w-8 rounded-full flex items-center justify-center text-sm font-semibold transition-colors duration-200 ${
+          className={`h-8 w-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-200 border-2 cursor-pointer ${
             isDark
-              ? "bg-zinc-800 text-zinc-200 hover:bg-zinc-700"
-              : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+              ? "bg-zinc-800 text-zinc-200 hover:bg-zinc-700 border-zinc-600 hover:border-zinc-500 shadow-sm"
+              : "bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-300 hover:border-slate-400 shadow-sm"
           }`}
         >
           {getInitial()}

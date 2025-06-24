@@ -102,6 +102,6 @@ export async function signup(formData: FormData) {
 
   // TODO: Right now, Supabase sends a confirmation email.
   // We should show a message to the user to check their email.
-  // For now, we'll just redirect to the changelog.
-  redirect('/changelog')
+  // For now, we'll just redirect to the homepage.
+  redirect('/')
 }

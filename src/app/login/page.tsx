@@ -61,7 +61,7 @@ function LoginForm() {
   }
 
   const handleLoadingComplete = () => {
-    router.push('/changelog')
+    router.push('/')
   }
 
   const getFieldError = (fieldName: string) => {
