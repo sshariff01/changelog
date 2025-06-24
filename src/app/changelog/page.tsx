@@ -1,51 +1,77 @@
-import { ChangelogList } from "@/components/changelog-list";
-import { ChangelogHeader } from "@/components/changelog-header";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
+import { ChangelogClient } from './changelog-client'
 
-async function getPosts() {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("posts")
-    .select("*")
-    .eq("status", "published")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Failed to load posts:", error.message);
-    return [];
-  }
-
-  return data;
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-async function getUser() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+async function getChangelogData(orgId: string) {
+  const supabase = await createClient()
 
-  if (!user) return null;
+  // Get organization details
+  const { data: organization, error: orgError } = await supabase
+    .from('organizations')
+    .select('id, name, slug, logo_url')
+    .eq('id', orgId)
+    .single()
 
-  // Get user profile information
-  const { data: profile, error } = await supabase
-    .from("profiles")
-    .select("username, first_name, last_name")
-    .eq("id", user.id)
-    .single();
-
-  if (error) {
-    console.error("Failed to load user profile:", error.message);
-    return user;
+  if (orgError || !organization) {
+    throw new Error('Organization not found')
   }
 
-  return { ...user, profile };
+  // Get changelog for this organization
+  const { data: changelog, error: changelogError } = await supabase
+    .from('changelogs')
+    .select('id, title, description')
+    .eq('organization_id', orgId)
+    .single()
+
+  if (changelogError || !changelog) {
+    throw new Error('Changelog not found')
+  }
+
+  // Get posts for this changelog
+  const { data: posts, error: postsError } = await supabase
+    .from('changelog_posts')
+    .select(`
+      id,
+      title,
+      content,
+      type,
+      created_at,
+      published_at
+    `)
+    .eq('changelog_id', changelog.id)
+    .order('published_at', { ascending: false })
+
+  if (postsError) {
+    console.error('Error fetching posts:', postsError)
+    throw new Error('Failed to fetch changelog posts')
+  }
+
+  return {
+    organization,
+    changelog,
+    posts: posts || []
+  }
 }
 
-export default async function ChangelogPage() {
-  const [posts, user] = await Promise.all([getPosts(), getUser()]);
+export default async function ChangelogPage({
+  searchParams,
+}: PageProps) {
+  const params = await searchParams
+  const orgId = params.org as string
 
-  return (
-    <main className="container mx-auto py-8 max-w-2xl">
-      <ChangelogHeader user={user} />
-      <ChangelogList posts={posts} user={user} />
-    </main>
-  );
+  if (!orgId) {
+    redirect('/')
+  }
+
+  try {
+    const data = await getChangelogData(orgId)
+    return <ChangelogClient {...data} />
+  } catch (error) {
+    console.error('Error loading changelog:', error)
+    redirect('/')
+  }
 }
