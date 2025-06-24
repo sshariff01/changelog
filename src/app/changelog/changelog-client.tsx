@@ -9,6 +9,7 @@ import { AdminToggle } from "@/components/admin-toggle";
 import { UserAvatar } from '@/components/user-avatar';
 import { ChangelogPost } from "@/components/changelog-post";
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Organization {
   id: string;
@@ -54,9 +55,11 @@ export function ChangelogClient({ organization, changelog, posts }: ChangelogCli
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-zinc-700 dark:bg-zinc-600 rounded-lg flex items-center justify-center overflow-hidden">
                 {organization.logo_url ? (
-                  <img
+                  <Image
                     src={organization.logo_url}
                     alt={`${organization.name} logo`}
+                    width={32}
+                    height={32}
                     className="w-full h-full object-cover"
                   />
                 ) : (

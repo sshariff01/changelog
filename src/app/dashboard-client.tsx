@@ -10,6 +10,7 @@ import { CreateOrganizationModal } from "@/components/create-organization-modal"
 import { createOrganization } from "@/app/organizations/actions";
 import Link from 'next/link';
 import { User as SupabaseUser } from '@supabase/supabase-js';
+import Image from 'next/image';
 
 interface Organization {
   id: string;
@@ -126,9 +127,11 @@ export function DashboardClient({ user, organizations }: DashboardClientProps) {
                     <div className="flex items-center justify-between">
                       <div className="w-10 h-10 bg-zinc-700 dark:bg-zinc-600 rounded-lg flex items-center justify-center overflow-hidden">
                         {org.logo_url ? (
-                          <img
+                          <Image
                             src={org.logo_url}
                             alt={`${org.name} logo`}
+                            width={40}
+                            height={40}
                             className="w-full h-full object-cover"
                           />
                         ) : (

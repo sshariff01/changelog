@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from 'next/image';
 
 interface CreateOrganizationModalProps {
   isOpen: boolean;
@@ -158,9 +159,11 @@ export function CreateOrganizationModal({ isOpen, onClose, onSubmit }: CreateOrg
                 {logoPreview ? (
                   <div className="flex items-center space-x-3">
                     <div className="w-16 h-16 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-                      <img
+                      <Image
                         src={logoPreview}
                         alt="Logo preview"
+                        width={64}
+                        height={64}
                         className="w-full h-full object-cover"
                       />
                     </div>
