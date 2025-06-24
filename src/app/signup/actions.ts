@@ -28,26 +28,34 @@ export async function signup(formData: FormData) {
     return { error: 'password', message: 'Password is required' }
   }
 
-  // Check if username is already taken
+  // Check if username already exists
   const { data: existingUsername, error: usernameCheckError } = await supabase
     .from('profiles')
     .select('username')
     .eq('username', username)
     .single()
 
-  if (existingUsername) {
-    return { error: 'username', message: 'Username already taken' }
+  if (usernameCheckError && usernameCheckError.code !== 'PGRST116') {
+    return { error: 'Error checking username availability' }
   }
 
-  // Check if email is already taken
+  if (existingUsername) {
+    return { error: 'Username already taken' }
+  }
+
+  // Check if email already exists
   const { data: existingEmail, error: emailCheckError } = await supabase
     .from('profiles')
     .select('email')
     .eq('email', email)
     .single()
 
+  if (emailCheckError && emailCheckError.code !== 'PGRST116') {
+    return { error: 'Error checking email availability' }
+  }
+
   if (existingEmail) {
-    return { error: 'email', message: 'Email already registered' }
+    return { error: 'Email already registered' }
   }
 
   // Create the user account with Supabase Auth

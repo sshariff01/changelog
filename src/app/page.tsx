@@ -1,17 +1,19 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import Image from "next/image";
+
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
 
 export default async function HomePage({
   searchParams,
-}: {
-  searchParams: { code?: string }
-}) {
+}: PageProps) {
   const supabase = await createClient()
+  const params = await searchParams
 
   // Handle email confirmation
-  if (searchParams.code) {
-    const { error } = await supabase.auth.exchangeCodeForSession(searchParams.code)
+  if (params.code) {
+    const { error } = await supabase.auth.exchangeCodeForSession(params.code as string)
 
     if (!error) {
       // Email confirmed successfully, redirect to changelog

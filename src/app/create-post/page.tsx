@@ -6,8 +6,16 @@ import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 import { useAdmin } from "@/lib/admin-context";
-import { useTheme } from "@/lib/theme-context";
 import { UserAvatar } from "@/components/user-avatar";
+import { User } from "@supabase/supabase-js";
+
+type UserWithProfile = User & {
+  profile?: {
+    username?: string | null;
+    first_name?: string | null;
+    last_name?: string | null;
+  } | null;
+};
 
 export default function CreatePostPage() {
   const [title, setTitle] = useState("");
@@ -15,11 +23,9 @@ export default function CreatePostPage() {
   const [tags, setTags] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<UserWithProfile | null>(null);
   const router = useRouter();
   const { isAdmin } = useAdmin();
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
 
   useEffect(() => {
     if (!isAdmin) {
@@ -39,7 +45,10 @@ export default function CreatePostPage() {
           .eq("id", user.id)
           .single();
 
-        setUser({ ...user, profile });
+        setUser({
+          ...user,
+          profile: profile || null
+        });
       }
     }
 

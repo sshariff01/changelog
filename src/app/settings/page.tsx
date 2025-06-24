@@ -15,7 +15,7 @@ async function updateProfile(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
-    return { error: 'Not authenticated' }
+    redirect('/login?error=not_authenticated')
   }
 
   const firstName = formData.get('first_name') as string
@@ -32,10 +32,10 @@ async function updateProfile(formData: FormData) {
     .eq('id', user.id)
 
   if (error) {
-    return { error: error.message }
+    redirect('/settings?error=' + encodeURIComponent(error.message))
   }
 
-  return { success: true }
+  redirect('/settings?success=true')
 }
 
 export default async function SettingsPage() {

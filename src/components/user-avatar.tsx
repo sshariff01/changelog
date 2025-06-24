@@ -4,14 +4,20 @@ import { useState, useRef, useEffect } from "react";
 import { User } from "@supabase/supabase-js";
 import { logoutWithoutRedirect } from "@/app/auth/actions";
 import { Button } from "@/components/ui/button";
-import { Settings, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { LoadingModal } from "@/components/loading-modal";
 import { useTheme } from "@/lib/theme-context";
 import Link from "next/link";
 
 interface UserAvatarProps {
-  user: (User & { profile?: { username: string; first_name: string; last_name: string } }) | null;
+  user: (User & {
+    profile?: {
+      username?: string | null;
+      first_name?: string | null;
+      last_name?: string | null;
+    } | null
+  }) | null;
 }
 
 export function UserAvatar({ user }: UserAvatarProps) {
@@ -81,33 +87,13 @@ export function UserAvatar({ user }: UserAvatarProps) {
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`relative flex items-center justify-center h-10 w-10 rounded-full overflow-hidden transition-all duration-300 ease-in-out border-2 cursor-pointer ${
+          className={`h-8 w-8 rounded-full flex items-center justify-center text-sm font-semibold transition-colors duration-200 ${
             isDark
-              ? "border-gray-600 text-gray-300 hover:bg-gray-700 hover:border-gray-500 hover:text-gray-100"
-              : "border-gray-300 text-gray-600 hover:bg-gray-600 hover:border-gray-600 hover:text-gray-100"
+              ? "bg-zinc-800 text-zinc-200 hover:bg-zinc-700"
+              : "bg-slate-100 text-slate-700 hover:bg-slate-200"
           }`}
         >
-          {user ? (
-            <span className="text-sm font-medium">
-              {user.profile?.first_name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}
-            </span>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="transition-colors duration-300"
-            >
-              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          )}
+          {getInitial()}
         </button>
 
         {isOpen && (
