@@ -126,7 +126,7 @@ export default async function HomePage({
           </div>
 
           {organizations.length === 0 ? (
-            <Card className="border-2 border-dashed border-border bg-gray-50 dark:bg-black">
+            <Card className="border-2 border-dashed border-border bg-gray-50 dark:bg-gray-800">
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <div className="w-16 h-16 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mb-4 border border-gray-200 dark:border-gray-700">
                   <GitBranch className="w-8 h-8 text-gray-600 dark:text-gray-400" />
