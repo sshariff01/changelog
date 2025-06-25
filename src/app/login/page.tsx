@@ -7,6 +7,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  CardDescription,
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -26,6 +27,7 @@ function LoginForm() {
   const [errors, setErrors] = useState<FormErrors>({})
   const [isLoading, setIsLoading] = useState(false)
   const [showLoadingModal, setShowLoadingModal] = useState(false)
+  const [unconfirmedEmail, setUnconfirmedEmail] = useState<string | null>(null)
   const formRef = useRef<HTMLFormElement>(null)
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -49,7 +51,11 @@ function LoginForm() {
       setShowLoadingModal(false)
       setIsLoading(false)
 
-      const { error: errorField, message } = result as { error: string; message: string }
+      const { error: errorField, message, email } = result as { error: string; message: string; email?: string }
+      if (errorField === 'unconfirmed') {
+        setUnconfirmedEmail(email || null)
+        return
+      }
       if (errorField === 'credentials') {
         setErrors({ credentials: message })
       } else if (errorField === 'general') {
@@ -70,6 +76,22 @@ function LoginForm() {
 
   const isFieldInvalid = (fieldName: string) => {
     return !!getFieldError(fieldName) || !!errors.credentials
+  }
+
+  if (unconfirmedEmail) {
+    return (
+      <div className="flex items-center justify-center min-h-screen p-4 bg-zinc-950">
+        <Card className="mx-auto max-w-md w-full border-zinc-800/50 bg-zinc-900">
+          <CardHeader className="pb-1">
+            <CardTitle className="text-xl text-zinc-100">Email Not Confirmed</CardTitle>
+            <CardDescription className="text-zinc-400">
+              A confirmation code was sent to <span className="font-semibold">{unconfirmedEmail}</span>.<br />
+              Please check your inbox and follow the instructions to verify your account.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+    )
   }
 
   return (

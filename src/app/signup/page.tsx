@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { LoadingModal } from '@/components/loading-modal'
 import { useState, useRef } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
 interface FormErrors {
@@ -31,6 +31,9 @@ export default function SignupPage() {
   const [showLoadingModal, setShowLoadingModal] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const email = searchParams.get('email')
 
   const handleSubmit = async (formData: FormData) => {
     setErrors({})
@@ -44,6 +47,12 @@ export default function SignupPage() {
       setIsLoading(false)
       const { error: errorField, message } = result as { error: string; message: string }
       setErrors({ [errorField]: message })
+    } else if (result && result.success && result.email) {
+      // Store the email in sessionStorage and redirect
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('confirmEmail', result.email)
+        window.location.href = '/confirm-email'
+      }
     }
   }
 

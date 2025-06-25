@@ -45,7 +45,7 @@ export async function createOrganization(formData: FormData) {
     const filePath = `organization-logos/${fileName}`;
 
     const { error: uploadError } = await supabase.storage
-      .from('avatars') // Using existing bucket, you might want to create a dedicated bucket
+      .from('organization-logos') // Create this bucket in your Supabase dashboard
       .upload(filePath, logoFile, {
         cacheControl: '3600',
         upsert: false
@@ -58,7 +58,7 @@ export async function createOrganization(formData: FormData) {
 
     // Get public URL
     const { data: urlData } = supabase.storage
-      .from('avatars')
+      .from('organization-logos')
       .getPublicUrl(filePath);
 
     logoUrl = urlData.publicUrl;

@@ -100,8 +100,6 @@ export async function signup(formData: FormData) {
     }
   }
 
-  // TODO: Right now, Supabase sends a confirmation email.
-  // We should show a message to the user to check their email.
-  // For now, we'll just redirect to the homepage.
-  redirect('/')
+  // Return the email to the client for confirmation page
+  return { success: true, email };
 }

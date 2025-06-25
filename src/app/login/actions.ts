@@ -64,7 +64,7 @@ export async function login(formData: FormData) {
 
       // Provide specific error message for email confirmation
       if (error.message.includes('Email not confirmed')) {
-        return { error: 'general', message: 'Please check your email and click the confirmation link before logging in.' }
+        return { error: 'unconfirmed', message: 'A confirmation code was sent to your email address.', email }
       }
 
       // For generic "Invalid login credentials", use a specific error type
